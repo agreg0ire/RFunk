@@ -7,13 +7,7 @@
 		const RN="\r\n";
 		
 		var $i_diviseur_mo=1;
-		
-		public function __toString()
-		{
-			
-			return '<a href="#" onclick="window.open(\'yyy.comze.com/RFunk/index.php\')" >Manuel de référence de RFunk</a>';
-		}
-		
+	
 		public function __construct($p1_i_max_time=0) 
 		{
 			
