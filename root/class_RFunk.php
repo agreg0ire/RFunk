@@ -4,9 +4,8 @@
 	{
 		
 		const DS=DIRECTORY_SEPARATOR;
-		const RN="\r\n";
 		
-		var $i_diviseur_mo=1;
+		private $i_diviseur_mo=1;
 	
 		public function __construct($p1_i_max_time=0) 
 		{
@@ -1076,7 +1075,7 @@
 			
 				if(is_file($p1_s_dir_src.'/'.$s_output_elements))
 				{
-						$sc_join_files .=$p1_s_dir_src.'/'.$s_output_elements.self::RN;
+						$sc_join_files .=$p1_s_dir_src.'/'.$s_output_elements.PHP_EOL;
 						
 				}elseif(is_dir($p1_s_dir_src.'/'.$s_output_elements) && $s_output_elements != '.'  && $s_output_elements != '..')
 				{
@@ -1454,7 +1453,7 @@
 				
 				$p1_s_text = preg_replace('#\s#i', '+', $p1_s_text);
 				
-				$p1_s_text = str_replace(array(self::RN, '&'), array('+','and'), utf8_decode(trim($p1_s_text)));
+				$p1_s_text = str_replace(array(PHP_EOL, '&'), array('+','and'), utf8_decode(trim($p1_s_text)));
 				
 			}else{ return false; }
 		
