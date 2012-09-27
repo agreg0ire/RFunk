@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>zipFiles</title>
+<link type="text/css" rel="stylesheet" href="RFunk.css">
+</head>
+<body>
+<h1>zipFiles</h1>
+<code><b>mixed</b> zipFiles( <b>string</b> root_dir  [, <b>string</b> root_dest  [, <b>string</b> zip_names [, <b>integer</b> max_file_size ]]])</code>
+<h2>Description</h2>
+A chaque appel récursif, c'est à dire à chaque dossier, cette méthode va archiver tous les fichiers y étant présents<br />
+avec un nom correspondant à l'incrémentation des appels récursifs.<br />
+Par défaut, le répertoire de déstination vaut le dossier courant.<br />
+La méthode renvoi un tableau avec les fichiers supérieurs à votre limite indiquée s'il y en eu, sinon VRAI.
+
+
+<h2>Exemple</h2>
+<div class="doc-source">
+<pre><code>
+$m_retour=$o_rfunk->zipFiles('c:\Documents and settings\user\bureau',getcwd(),'retour_archivage', 6);
+
+if(is_bool($m_retour))
+{
+	echo 'Tout vos fichiers ont été archivés';
+	
+}elseif(is_array($m_retour))
+{
+		echo 'Voici le(s) fichiers qui n ont pas été archivés =>';
+
+		foreach($m_retour as $i_key => $s_value)
+		{
+				echo '&lt;br /&gt;'.$s_value;
+		}
+
+}
+
+
+</code></pre>
+</div>
+
+
+<h2>Voir</h2>
+<a href="unZipFolders.htm">unZipFolders()</a>.
+<a href="separateFilesByMaxSize.htm">separateFilesByTotalMaxSize()</a>.
+<hr style="margin-top:1.5em">
+<div style="text-align:center"><a href="index.php">Index</a></div>
+</body>
+</html>

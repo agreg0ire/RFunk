@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>rmFiles</title>
+<link type="text/css" rel="stylesheet" href="RFunk.css">
+</head>
+<body>
+<h1>rmFiles</h1>
+<code><b>mixed</b> rmFiles([<b>string</b> root_dir ])</code>
+<h2>Description</h2>
+Supprime récursivement tous les fichiers à partir d'un répertoire racine.<br />
+Si une erreur de suppresion survient pour diverses raisons : fichier utilisé en ressource, fichier caché ou fichier système etc, <br />
+sera renvoyé un tableau contenant le chemin vers le(s) fichier(s) en question, sinon VRAI sera retourné.<br />
+
+<br>
+
+<h2>Exemple</h2>
+
+<div class="doc-source">
+<pre><code>
+
+$m_retour=$o_rfunk->rmFiles('c:\windows');
+
+if(is_array($m_retour))
+{
+	echo 'Ces fichiers n ont pas pu être supprimés => ';
+
+	foreach($m_retour as $i_key => $s_value): 
+	
+		echo '&lt;br /&gt;'.$s_value; 
+		
+	endforeach;
+
+}elseif(is_bool($m_retour))
+{
+
+	echo 'Tous les fichiers ont bien été supprimés !';
+}
+
+</code></pre>
+</div>
+<h2>Voir</h2>
+<a href="rmParentDir.htm">rmParentDir()</a>,
+
+<hr style="margin-top:1.5em">
+<div style="text-align:center"><a href="index.php">Index</a></div>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>zipTree</title>
+<link type="text/css" rel="stylesheet" href="RFunk.css">
+</head>
+<body>
+<h1>zipTree</h1>
+<code><b>mixed</b> zipTree( <b>string</b> global_dir   <b>string</b> local_dir <b>string</b> zip_name [, <b>bool</b> keep_arbo [, <b>integer</b> max_filesize]])</code>
+<h2>Description</h2>
+Cette méthode archive une arborescence en respectant l'algorithme DOSSIER/FICHIERS.<br /><br />
+L'avant dernier paramètre booléen indique justement si vous voulez conservez l'arborescence de départ ou non.
+<br />
+Une limite à 10 mo par fichier à archiver est fixée par défaut (Vous pouvez l'augmentez à vos risques et périls).
+<br />
+Par défaut la méthode n'archive pas les dossiers vides non plus.<br />
+
+La méthode renvoi faux si rien n'a été trouvé ou un tableau multidimensionnel en fonction des excéptions gérées.<br /><br />
+
+<b> Important !!! </b><br /><br />
+Si vous voulez agir ensuite sur les fichiers qui ont étés archivés, vous devez impérativement :<br />
+fermer d'abord la variable "$o_z" déclarée comme GLOBAL en interne, donc accéssible de l'extérieur.<br />
+il suffit de faire => $o_z->close();
+<h2>Exemple</h2>
+<div class="doc-source">
+<pre><code>
+$o_rfunk= new RFunk;
+
+$m_retour=$o_rfunk->zipTree('C:\wamp\www\test','test', 'test', true, 5);
+
+
+
+if(is_array($m_retour))
+{
+
+	$o_z->close();  
+	
+	#### TRèS IMPORTANT DE FERMER LA RESSOURCE ZIP SI VOUS VOULEZ FAIRE UN TRAITEMENT APRèS #####
+
+		foreach($m_retour as $s_key => $a_value):
+		
+			if($s_key == 'FILES')
+			{
+			
+				foreach($a_value as $i_key => $s_value):
+				
+					#### traitement que vous voulez faire ######
+					
+				endforeach;
+			
+			}elseif($s_key == 'FILES > 5 MO')
+			{
+				foreach($a_value as $i_key => $s_value):
+				
+					#### traitement que vous voulez faire ######
+				
+				endforeach;
+			
+			}elseif($s_key == 'DIRS')
+			{
+				foreach($a_value as $i_key => $s_value):
+					
+					#### traitement que vous voulez faire ######
+				
+				endforeach;
+			
+			}
+		
+		
+		endforeach;
+
+}else{ echo 'Le répertoir source était vide'; }
+</code></pre>
+</div>
+
+
+<h2>Voir</h2>
+
+<a href="unZipFolders.htm">unZipFolders()</a>.
+<hr style="margin-top:1.5em">
+<div style="text-align:center"><a href="index.php">Index</a></div>
+</body>
+</html>

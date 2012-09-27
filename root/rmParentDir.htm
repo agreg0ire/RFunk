@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>rmParentDir</title>
+<link type="text/css" rel="stylesheet" href="RFunk.css">
+</head>
+<body>
+<h1>rmParentDir</h1>
+<code><b>NULL</b> rmParentDir( <b>string</b> root_dir )</code>
+<h2>Description</h2>
+Supprime le dossier parent récursivement à partir d'un répertoire racine si ce dernier est bien sûr vide !
+<br />
+<br />Utilisez <b>rmFiles()</b> pour vider tous les dossiers, puis <b>getDirsPaths() </b>pour récupérer l'arboresence dans un tableau.<br />
+
+Encore une fois, un chemin absolu est nécessaire car une recherche de charactère est opérée sur la constante <br/>
+ <b>DIRECTORY_SEPARATOR</b> (qui d'ailleurs varie entre Unix et Windows). <br /><br />
+Renvoi le chemin vers le premier dossier parent qui n'est pas vide.
+
+<h2>Exemple</h2>
+<div class="doc-source">
+<pre><code>
+$o_rfunk=new RFunk;
+
+$m_retour=$o_rfunk->rmFiles('C:\Documents and Settings\pouet\Mes documents\Téléchargements');
+
+if(is_array($m_retour))
+{
+	echo 'Ces fichiers n ont pas pu être supprimés => &lt;br /&gt;';
+
+	foreach($m_retour as $i_key => $s_value): 
+	
+		echo &lt;br /&gt;'.$s_value; 
+		
+	endforeach;
+
+}elseif(is_bool($m_retour))
+{
+
+	$a_dir_paths=$o_rfunk->getDirsPaths('C:\Documents and Settings\pouet\Mes documents\Téléchargements');
+
+
+	foreach($a_dir_paths as $i_key => $s_value)
+	{
+		$o_rfunk->rmParentDir($s_value);
+	}
+
+}
+
+
+
+
+</code></pre>
+</div>
+<h2>Voir</h2>
+<a href="getDirsPaths.htm">getDirsPaths()</a>, <a href="rmFiles.htm">rmFiles()</a>.
+<hr style="margin-top:1.5em">
+<div style="text-align:center"><a href="index.php">Index</a></div>
+</body>
+</html>

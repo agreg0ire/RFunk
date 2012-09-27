@@ -1,0 +1,41 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>getDirsPaths</title>
+<link type="text/css" rel="stylesheet" href="RFunk.css">
+</head>
+<body>
+<h1>getDirsPaths</h1>
+<code><b>mixed</b> getDirsPaths( [, <b>string</b> root_dir ])</code>
+<h2>Description</h2>
+Retourne un tableau contenant le chemin  pointant vers chaque répertoires dans l'arborescence à partir d'un répertoire racine, <br />
+ ou FAUX s'il n'y avait aucun sous-dossiers.<br />
+ Sans paramètre, la méthode démarrera dans le fichier courant.
+ <br /><br />
+<b>Attention</b> au cas où vous voulez exploitez le résultat de cette méthode dans <b>rmParentDir();</b>, <br />
+VOUS DEVEZ IMPERATIVEMENT FOURNIR UN
+<b>CHEMIN ABSOLU</b> comme  paramètre, répertoire racine !
+<br>
+
+
+<h2>Exemple</h2>
+<div class="doc-source">
+<pre><code>$o_rfunk->getDirsPaths(getcwd());</code></pre>
+</div>
+est préférable à 
+<div class="doc-source">
+<pre><code>$o_rfunk->getDirsPaths('.');</code></pre>
+</div>
+ou encore à
+
+<div class="doc-source">
+<pre><code>$o_rfunk->getDirsPaths();</code></pre>
+</div>
+
+<h2>Voir</h2>
+<a href="getFilesPaths.htm">getFilesPaths()</a> <a href="rmParentDir.htm">rmParentDir()</a>.
+<hr style="margin-top:1.5em">
+<div style="text-align:center"><a href="index.php">Index</a></div>
+</body>
+</html>

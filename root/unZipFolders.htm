@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>unZipFolders</title>
+<link type="text/css" rel="stylesheet" href="RFunk.css">
+</head>
+<body>
+<h1>unZipFolders</h1>
+<code><b>mixed</b> unZipFolders( <b>string</b> root_dir  [, <b>string</b> root_dest  [, <b>integer</b> max_size_zip [, <b>integer</b> max_size_file_in_zip [, <b>boolean</b> extract_in_same_dir [, <b>boolean</b> extract_only_file ]]]]])</code>
+<h2>Description</h2>
+Cette méthode qui dispose de nombreux paramètres optionnels permet d'extraire chaque archive ZIP trouvée dans une aroborescence à partir d'un répertoire root <br />
+Le premier paramètre est obligatoire, par défaut la destination d'extraction se fait dans le répertoire d'exécution du script, <br />
+Seront traités que les ZIPS inférieurs ou égal à 5mo et dedans les fichiers inférieurs ou égal à 1 mo. <br />
+<br />
+<b>Vous pouvez augmentez ces valeurs à vos risques et périls !</b> (PHP n'est pas vraiment fait pour ce genre de traitement). <br /> <br />
+
+Enfin, les deux derniers booléens optionnels correspondent successivement et respectivement à :<br />
+- extraction dans un dossier unique (par défaut), ou dans différents dossiers correspondant au compteur de récursivité.(false)<br />
+- extraction des fichiers uniquement (par défaut), ou conserver l'arborescence interne au zip avec, dossiers. (false)
+<br />
+<br />
+La méthode renvoi un tableau avec le "dirname" des zips s'il y en a eu dans l'arborescence spécifiée par votre recherche ou faux si aucun zip n'a été trouvé.
+<br />
+<br />
+<b>Astuce !</b> <br />
+Dans votre dossier de destination, vous pouvez spécifier un ou plusieurs sous-dossiers non existant car la méthode "extractTo()" de la classe native PHP5 ZipArchive, <br />
+effectue automatiquement une création de dossier récursive correspondant à vos dossiers accueillant vos données extraites, si ces dossiers n'existent pas.
+<h2>Exemple</h2>
+<div class="doc-source">
+<pre><code>
+$o_rfunk= new RFunk;
+
+$m_retour=$o_rfunk->unZipFolders('c:',getcwd().RFunk::DS.'dossier1_non_existant'.RFunk::DS.'dossier2_non_existant', 10, 2);
+
+if(is_bool($m_retour))
+{
+	echo 'il n\'y avait pas de zip a partir de "c:"';
+	
+}elseif(is_array($m_retour))
+{
+
+		foreach($m_retour as $i_key => $s_value)
+		{
+				echo '&lt;br /&gt;'.$s_value;
+		}
+
+}
+</code></pre>
+</div>
+
+
+<h2>Voir</h2>
+
+<a href="separateFilesByMaxSize.htm">separateFilesByTotalMaxSize()</a>.
+<hr style="margin-top:1.5em">
+<div style="text-align:center"><a href="index.php">Index</a></div>
+</body>
+</html>

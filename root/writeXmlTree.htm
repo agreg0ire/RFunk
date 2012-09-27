@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>writeXmlTree</title>
+<link type="text/css" rel="stylesheet" href="RFunk.css">
+</head>
+<body>
+<h1>writeXmlTree</h1>
+<code><b>NULL</b> writeXmlTree( <b>string</b> root_dir , <b>string</b> dest_path [, <b>string</b> xml_name [, <b>string</b> encoding ]])</code>
+<h2>Description</h2>
+
+Vous devez impérativement <b>fermer vous-même l'XML</b> déclaré comme global dans la méthode (donc accessible en dehors de la classe), 
+si vous voulez qu'il soit "syntaxiquement" valide. <br />
+La méthode aurait pu se charger de le faire mais cela aurait doublé son temps d'exécution car  en effet,<br />
+ pour pouvoir déterminer à quel moment fermer le noeud racine de l'xml (firstChildNode), un appel a <b>getDirsPath()</b> aurait du être établi au premier
+ appel récursif de writeXmlTree(), pour compter le nombre de sous répertoire renvoyé par le tableau de getDrisPath().
+
+<br /><br />
+Les deux derniers paramètres sont optionnels, ils correspondent successivement et respectivement aux : <br /><br />
+- nom que portera votre arbre xml et <br />
+- l'encodage qui est par défaut en latin "iso-8859-1".
+<br />
+<br />
+
+
+<h2>Exemple</h2>
+<div class="doc-source">
+<pre><code>
+
+$o_rfunk = new RFunk(180);
+
+$o_rfunk->writeXmlTree(getcwd(),getcwd(),'retour_tree','UTF-8');
+
+####" Fermeture manuel de l'XML ####
+
+fwrite($h_file,' &lt;/Tree&gt;'.RN);
+fclose($h_file);
+
+</code></pre>
+</div>
+
+
+
+
+<hr style="margin-top:1.5em">
+<div style="text-align:center"><a href="index.php">Index</a></div>
+</body>
+</html>
