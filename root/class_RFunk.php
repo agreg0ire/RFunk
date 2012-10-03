@@ -912,6 +912,41 @@
 			if(isset($a_zips_in_base_zip)){  return $a_zips_in_base_zip; }else{ return false; }
 				
 	}
+    
+    public function unZipZipInZipShortestVersion($p1_s_zip_src, $p2_s_dir_dest)
+    {
+        static $a_imbricated_zips;
+        
+        $o_zip = new ZipArchive;
+        
+        if($o_zip->open($p1_s_zip_src)  === TRUE)
+        {
+            for($i = 0; $i < $o_zip->numFiles; $i++):
+            
+                $a_infos_elements = $o_zip->statIndex($i);
+                
+                if($o_zip->extractTo($p2_s_dir_dest, $a_infos_elements ['name'] ) === TRUE)
+                {
+                    if(strtolower(strrchr($a_infos_elements ['name'], '.' )) == '.zip')
+                    {
+                        $a_imbricated_zips [] = $a_infos_elements['name'];
+                        $this->unZipZipInZip($a_infos_elements['name'], $p2_s_dir_dest); 
+                    }
+                    
+                }else return FALSE;
+            
+            endfor;
+            
+            $o_zip->close();
+            
+        }else return FALSE;
+        
+        if(is_array($a_imbricated_zips))
+        {
+            return TRUE;
+            
+        }else return FALSE;
+    }
 	
 	
 //VOUS DEVEZ IMPERATIVEMENT FERMER LE ZIP EN DEHORS DE LA FONCTION !!!!!!!!!!!!!!!!
