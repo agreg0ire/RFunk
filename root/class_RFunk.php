@@ -929,6 +929,7 @@
                 {
                     if(strtolower(strrchr($a_infos_elements ['name'], '.' )) == '.zip')
                     {
+                        
                         $a_imbricated_zips [] = $a_infos_elements['name'];
                         $this->unZipZipInZip($a_infos_elements['name'], $p2_s_dir_dest); 
                     }
@@ -943,7 +944,7 @@
         
         if(is_array($a_imbricated_zips))
         {
-            return TRUE;
+            return $a_imbricated_zips;
             
         }else return FALSE;
     }
