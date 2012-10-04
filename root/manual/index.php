@@ -1,7 +1,6 @@
 ﻿<html>
 <head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-<script src="../easyTrad/translationFunk.js" ></script>
 <title>Manuel de r&eacute;f&eacute;rence de RFunk</title>
 <link type="text/css" rel="stylesheet" href="RFunk.css">
 <style>
@@ -16,7 +15,6 @@
 
 	<div id="left_top">
 		<h1>RFunk Class (requires &gt;=Php5)</h1>
-		<a href="RFunk.zip">Download all the files</a> 
 		<br />
 		<br />
 		<h2><u>Constants</u></h2>
@@ -37,7 +35,7 @@
 		<h2><u>Public Methods</u></h2>
 <?php
 
-include('class_RFunk.php');
+include('../RFunk.php');
  
 $o_rfunk = new RFunk;
 
@@ -48,7 +46,7 @@ foreach(get_class_methods(get_class($o_rfunk)) as $i_key => $s_method_name):
 	{
 		echo '<br /> <a href="'.$s_method_name.'.php">'.$s_method_name.'</a>';
 		
-	}else{ echo '<br /> <a href="'.$s_method_name.'.htm">'.$s_method_name.'</a>';}
+	}else echo '<br /> <a href="'.$s_method_name.'.htm">'.$s_method_name.'</a>';
 
 endforeach; 
 
@@ -59,7 +57,7 @@ endforeach;
 <div id="pate" style="display: none;">
 <br />
 <br />
-<?php highlight_file('class_RFunk.php'); ?>
+<?php highlight_file('../RFunk.php'); ?>
 </div>
 </div>
 </body>

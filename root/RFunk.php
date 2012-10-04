@@ -1676,6 +1676,35 @@
         
         closedir($h_dir);
     }
+    
+    public function copyTree($p1_s_dir_src = '.', $p2_s_dir_dest = NULL)
+    {
+        if($p2_s_dir_dest != NULL)
+        {
+            $h_dir = opendir($p1_s_dir_src);
+            
+            while($s_looped_elements = readdir($h_dir)):
+            
+                if(is_file($p1_s_dir_src.self::DS.$s_looped_elements))
+                {
+                    if(!copy($p1_s_dir_src.self::DS.$s_looped_elements, $p2_s_dir_dest.self::DS.$s_looped_elements))
+                    {
+                        return FALSE;
+                    }
+                    
+                }elseif(is_dir($p1_s_dir_src.self::DS.$s_looped_elements) && $s_looped_elements != '.' && $s_looped_elements !='..')
+                {
+                    $this->copyTree($p1_s_dir_src.self::DS.$s_looped_elements);
+                }
+            
+            endwhile;
+                
+            closedir($h_dir);
+            
+            return TRUE;
+            
+        }else return FALSE;
+    }
 		############# END OF CLASS ######################
 }
 ?>
