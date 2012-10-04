@@ -20,7 +20,9 @@
 			}else{ exit('<font color="red">ERREUR :: Le paramètre du constructeur doit être un entier non flottant</font>'); }
 		
 		}
-		
+		/**
+         * @return  string
+         */
 		private function indent($p1_s_dir_orig, $p2_s_single_char, $p3_i_incr)
 		{
 			
@@ -31,8 +33,11 @@
 			return $s_formated;
 				
 		}
-			
-		private function strrchr2($p1_s_src, $p2_s_spliter)//return string
+		
+        /**
+         * @return  string
+         */
+		private function strrchr2($p1_s_src, $p2_s_spliter)
 		{
 			
 			$a_splited=explode($p2_s_spliter, $p1_s_src);
@@ -41,7 +46,10 @@
 			
 			return strtolower($a_splited[$i_num_keys - 1]);
 		}
-		
+		/**
+         * @return  string
+         */
+        
 		private function removeUTF8BOMHeader($p1_s_path_to_file)
 		{
 			 $h_file = fopen($p1_s_path_to_file, "r");
@@ -56,7 +64,9 @@
 		    }else{ return $s_all_file; }
 		}
 		
-		
+		/**
+         * @return  int
+         */
 		public function calculSize($p1_s_dir_src='.', $p2_b_for_round=true, $p3_s_by_type='')
 		{
 	
@@ -100,7 +110,10 @@
 			}else{ return $ic_octet_from_files / $this->i_diviseur_mo; }
 			
 		}	
-		
+		/**
+         * @return  mixed
+         */
+        
 		public  function getFilesPaths($p1_s_dir_src='.') 
 		{
 			
@@ -129,9 +142,16 @@
 				}
 				closedir($h_dir);
 			
-				if(isset($a_all_paths)){  return $a_all_paths;  }else{ return false; }
+				if(isset($a_all_paths))
+                {  
+                    return $a_all_paths;
+                    
+                }else return false; 
 		}
 		
+        /**
+         * @return  mixed
+         */
 		public  function getFilesPathsSvnVersion($p1_s_dir_src='.', array $p2_a_specified_extensions, $p3_s_dir_src_not_changing) 
 		{
 			
@@ -193,10 +213,14 @@
 				{
 					return $a_files_paths_and_contents;
 					
-				}else{ return false; }
+				}else return false; 
 				
 				
 		}
+        
+        /**
+         * @return  mixed
+         */
 		
 		public function getDirsPaths($p1_s_dir_src='.') //le chemin doit ABSOLMENT etre ABSOLU !!!
 		{
@@ -221,10 +245,16 @@
 			        }
 			    closedir($h_dir);
 			    
-			    if(count($a_all_paths) > 0){  return $a_all_paths;  }else{ return false; }
+			    if(count($a_all_paths) > 0)
+                {  
+                    return $a_all_paths;
+                
+                }else return false; 
 	   
 		} 
-		
+		  /**
+         * @return  mixed
+         */
 		
 			public function getAllExts($p1_s_dir_src='.')
 			{
@@ -256,12 +286,18 @@
 				}
 			closedir($h_dir);
 			
-			if(isset($a_all_exts)){ return $a_all_exts; }else{ return false; }	
+			if(isset($a_all_exts))
+            { 
+                return $a_all_exts;
+            
+            }else return false; 	
 		}
 		
-		
+		/**
+         * @return  mixed
+         */
 	
-		public  function rmFiles($p1_s_dir_src='.')
+		public  function rmFiles($p1_s_dir_src='.', array $p2_a_files_to_avoid)
 		{
 		
 				static $a_files_in_error;
@@ -273,27 +309,33 @@
 					
 					if(is_file($p1_s_dir_src.self::DS.$s_mixed_output))
 					{
-						if(@unlink($p1_s_dir_src.self::DS.$s_mixed_output))
-						{
-							
-						}else{ $a_files_in_error []= $p1_s_dir_src.self::DS.$s_mixed_output; }
+					   if(!in_array($s_mixed_output, $p2_a_files_to_avoid))
+                       {
+                            if(!@unlink($p1_s_dir_src.self::DS.$s_mixed_output)) $a_files_in_error [] = $p1_s_dir_src.self::DS.$s_mixed_output;
+                       }
 						
+				
 					}elseif(is_dir($p1_s_dir_src.self::DS.$s_mixed_output) && $s_mixed_output!='.' && $s_mixed_output!='..')
 					{
 						
-						$this->rmFiles($p1_s_dir_src.self::DS.$s_mixed_output);
+						$this->rmFiles($p1_s_dir_src.self::DS.$s_mixed_output, $p2_a_files_to_avoid);
 						
 					}
 					
 				}
 			closedir($h_dir);
 			
-			if(isset($a_files_in_error)){  return $a_files_in_error; }else{ return true; }
+			if(isset($a_files_in_error))
+            {  
+                return $a_files_in_error;
+                
+            }else return true;
 			
 		}
 
-	
-	///il ne faut PAS qu il y ait dantislash ala fin !!!!
+        /**
+         * @return  void
+         */
 	
 	public function rmParentDir($p1_s_dir_src)
 	{
@@ -312,21 +354,17 @@
 	           
 	        }
 	}
-	
-	/*
-	/
-	/	La fonction suivante n'emploie pas une récursivité en fonction d'un dossier 
-	/	MAIS de la taille additionée de fichiers =>
-	/	LE REPERTOIRE ROOT DE SCAN NE DOIT PAS CONTENIR D AUTRES SOUS REPERTOIRES !!!
-	/
-	*/
-	
+
+    /**
+     * @return  mixed
+     * @since   does not use a recursion by folder but according to the filesize
+     * @todo    is not to specify a root dir with sub dir
+     */
 	public function separateFilesByMaxSize($p1_dir_src, $p2_s_dir_dest='.', $p3_s_dir_root='root_', $p4_i_size_limit_rep_mo=2) 
 	{
 		
 		
-		static $a_files_in_error;		
-		static $i_compteur_recursivite;
+		static $a_files_in_error, $i_compteur_recursivite;
 		$i_compteur_recursivite++;
 				
 		if(@mkdir($p2_s_dir_dest.self::DS.$p3_s_dir_root.self::DS.$i_compteur_recursivite,0777,TRUE))
@@ -360,12 +398,14 @@
 					
 	}
 
+    /**
+    * @return  mixed
+    */
 
 	public function separateFilesByExts($p1_s_dir_src, $p2_s_dir_path_dest, array $p4_a_exts)
 	{
 		
-			static $a_files_in_error;
-			static $i_count_recur;
+			static $a_files_in_error, $i_count_recur;
 			
 			$i_count_recur++;
 			
@@ -406,8 +446,16 @@
 				endwhile;
 			closedir($h_dir);
 			
-			if(isset($a_files_in_error)){  return $a_files_in_error;  }else{ return true;	}
+			if(isset($a_files_in_error))
+            {  
+                return $a_files_in_error;
+                
+            }else return true;
 	}
+    
+    /**
+    * @return  mixed
+    */
 
 
 		public function joinFilesInOneFolder($p1_s_dir_src, $p2_s_dir_dest, $p3_b_for_cut=true)
@@ -450,11 +498,16 @@
 				
 				closedir($h_dir);
 				
-				if(isset($a_files_in_error)){	return $a_files_in_error; }else{ return true; }
+				if(isset($a_files_in_error))
+                {	
+                    return $a_files_in_error; 
+                
+                }else return true; 
 			}
 	
-		############## L'ASTUCE CONSISTE A RééCHAPPER les METACHARACTèrs DU RéSULTAT QUI SATISFAIT LE MASQUE
-		#############  AU K OU LA PERSONNE A FAIT UNE RECHERCHE PAR REGEXP AVANT DE REMETTRE CE R2SULTAT AU PREG REPLACE !!!!!!!!!!!!!!!!!!!!!!!!!!
+    /**
+    * @return  mixed
+    */
 		
 	public function findStr($p1_s_root_dir='.', $p2_s_searched_pattern, array $p3_a_ext_ascii, $p4_b_for_casse_sensitive=false, $p5_b_for_view_line=true, $p6_b_for_regexp=false)
 	{
@@ -606,10 +659,16 @@
 		
 	closedir($h_dir);
 		
-		if(isset($a_retour_result)){ return $a_retour_result; }else{ return false; }
+		if(isset($a_retour_result))
+        { 
+            return $a_retour_result;
+        
+        }else return false; 
 	}   
 	   
-	   
+    /**
+    * @return  string
+    */
 	  
 	public function dump($p1_m_var = null)
  	{
@@ -716,7 +775,9 @@
 	 	return $sc_display_dump;
  	}
 	
-	
+	/**
+    * @return  mixed
+    */
 		public function zipFiles($p1_s_dir_src, $p2_s_dir_dest='.', $p3_s_zips_name='output_', $p4_i_max_file_size=4)
 		{
 		 	
@@ -753,11 +814,18 @@
 				closedir($h_dir);
 			$o_z->close();
 			
-			if(isset($a_files_up_to_max_filesize)){ return $a_files_up_to_max_filesize; }else{ return true; }
+			if(isset($a_files_up_to_max_filesize))
+            { 
+                return $a_files_up_to_max_filesize;
+            
+            }else return true; 
 		 	
 		}
 		
-		######## NE PAS OUBLIER DE FERMER LA RESSOURCE ZIP EN DEHORS DE LA METHODE #############
+		/**
+        * @return  mixed
+        * @global   var $o_z must be closed outside the function
+        */
 		
 		
 		public function unZipFolders($p1_s_dir_src, $p2_s_dir_dest='.', $p3_i_max_size_zip=5, $p4_b_for_keep_arbo=true)
@@ -830,13 +898,21 @@
 					//si il ya eu au moins des zips inférieurs a 10 mo retourne tous le tableau multi dim
 					//il peut tres bien y avoir eu que des zips supérieurs a 10 mo
 					
-					if(isset($mda_exceptions['ZIPS < '.$p3_i_max_size_zip.' MO'])) {  return $mda_exceptions;  }else{ return false; }
+					if(isset($mda_exceptions['ZIPS < '.$p3_i_max_size_zip.' MO']))
+                    {
+                        return $mda_exceptions;
+                    }else return false; 
 		
 		}
 			
 			
 
-###### il faut passer un chemin relatif pour le 2eme parametre
+    /**
+     * @return  mixed
+     * @see     that in order to work PERFECTLY the extraction folder must be '.'
+     * @see     if you use another type of destination it will work randomly
+     * @deprecated  function use next one instead
+     */
 
 	public function unZipZipInZip($p1_s_first_zip, $p2_s_dir_dest='.', $p3_b_for_del_first_zip=false) //ex : => unzip/other_dirs
 	{
@@ -913,7 +989,13 @@
 				
 	}
     
-    public function unZipZipInZipShortestVersion($p1_s_zip_src, $p2_s_dir_dest)
+    /**
+     * @return  mixed
+     * @see     that in order to work PERFECTLY the extraction folder must be '.'
+     * @see     if you use another type of destination it will work randomly
+     */
+    
+    public function unZipZipInZipShorterVersion($p1_s_zip_src, $p2_s_dir_dest = '.')
     {
         static $a_imbricated_zips;
         
@@ -931,7 +1013,7 @@
                     {
                         
                         $a_imbricated_zips [] = $a_infos_elements['name'];
-                        $this->unZipZipInZip($a_infos_elements['name'], $p2_s_dir_dest); 
+                        $this->unZipZipInZipShorterVersion($a_infos_elements['name'], $p2_s_dir_dest); 
                     }
                     
                 }else return FALSE;
@@ -950,15 +1032,18 @@
     }
 	
 	
-//VOUS DEVEZ IMPERATIVEMENT FERMER LE ZIP EN DEHORS DE LA FONCTION !!!!!!!!!!!!!!!!
+	   /**
+        * @return  mixed
+        * @global   var $o_z must be closed outside the function
+        */
+		
 
 	public function zipTree($p1_s_global_dir, $p2_s_local_dir, $p3_s_zip_name, $p4_b_for_keep_arbo=true, $p5_i_max_filesize=10)
 	{
 		
 			global $o_z; //CAR ON FERME LA RESSOURCE EN DEHORS DE LA FONCTION pour pouvoir ensuite agir sur les fichiers archivés
 		
-			static $mda_dir_and_files;		
-			static $i_count_recur;
+			static $mda_dir_and_files, $i_count_recur;
 			
 			$i_count_recur++;
 			
@@ -1012,17 +1097,22 @@
 				
 			closedir($h_dir);
 			 
-			if(isset($mda_dir_and_files)){  return $mda_dir_and_files;  }else{ return false; }
+			if(isset($mda_dir_and_files))
+            { 
+                return $mda_dir_and_files;
+            
+            }else return false; 
 	}
 	
-	######## THIS IS A DOUBLE RECURSIVE FUNCTION => it calls unZipZipInZip(); also !!!!!!!!!!
-	
-	##### on passe volontairement un chemin relatif en deuxieme parametre de unZipZipinZip(); car une expression régulière va etre faite dessus !!!!
+    /**
+     * @return      mixed
+     * @see         that's a double recursive function
+     */
 	
 		public function unZipTreeAndRInZip($p1_s_dir_src='.', $p2_b_for_del_first_zip=false)
 		{
 			
-			static $a_zips_found;
+			static $mda_zips_found;
 			
 			$h_dir=opendir($p1_s_dir_src);
 			
@@ -1040,11 +1130,11 @@
 						if(filesize($p1_s_dir_src.RFunk::DS.$s_looped_elements) / $this->i_diviseur_mo < 10)
 						{
 						
-							$a_zips_found['ZIPS < 10 MO'] []= $p1_s_dir_src.RFunk::DS.$s_looped_elements;
+							$mda_zips_found['ZIPS < 10 MO'] []= $p1_s_dir_src.RFunk::DS.$s_looped_elements;
 						
-							$this->unZipZipInZip($p1_s_dir_src.RFunk::DS.$s_looped_elements, 'unZip', $p2_b_for_del_first_zip);
+							$this->unZipZipInZipShorterVersion($p1_s_dir_src.RFunk::DS.$s_looped_elements);
 							
-						}else{ $a_zips_found['ZIPS > 10 MO'] []= $p1_s_dir_src.RFunk::DS.$s_looped_elements; }
+						}else{ $mda_zips_found['ZIPS > 10 MO'] []= $p1_s_dir_src.RFunk::DS.$s_looped_elements; }
 					}
 					
 				}elseif(is_dir($p1_s_dir_src.RFunk::DS.$s_looped_elements) && $s_looped_elements !='.' && $s_looped_elements !='..')
@@ -1057,10 +1147,16 @@
 		
 			closedir($h_dir);
 			
-			if(isset($a_zips_found['ZIPS < 10 MO'])){  return $a_zips_found;  }else{ return false; }
+			if(isset($mda_zips_found['ZIPS < 10 MO']))
+            {  
+                return $mda_zips_found;  
+            
+            }else return false; 
 			
 		}
-	
+	/**
+     * @return      string
+     */
 	public function arbrowser($p1_s_dir_src='.')
 	{
 		static $sc_arbo;
@@ -1127,6 +1223,9 @@
 	
 	}
 	
+    /**
+     * @return      string
+     */
 	public function convertFlashFontSizeToHtmlFontSize($p1_s_txt='', $p2_i_init_flash=8, $p3_i_init_html=1, $p4_i_end_of_flash=15)
 	{
 		static $a_all_conv;
@@ -1153,13 +1252,14 @@
 				
 				return $a_all_conv[$i_num_keys - 1];
 				
-			}else{ return $p1_s_txt; } //si aucune conversion n a été faite on retourne le texte de départ !!!
+			}else return $p1_s_txt; 
 	}
-	
+	/**
+     * @return      string
+     */
 	public function xmlRParse($p1_s_xml_file, $p2_o_next_children)
 	{
-		static $i_num_levels;
-		static $sc_arbo_xml;
+		static $i_num_levels, $sc_arbo_xml;
 		
 		$i_num_levels++;
 		
@@ -1271,7 +1371,7 @@
 					$sc_arbo_xml .=  '<font color="blue">/&gt;</font></li>';
 					
 					
-				}else{ /*ADD OTHER CASE	*/}
+				}
 				
 		endforeach;
 		
@@ -1305,6 +1405,7 @@
  * 
  * 				=> if('Z' > 'a') echo 'greater';
  * @see			that you need to hide the warning of the eval function altought the array is well formed !!!!
+ * @return      mixed
  */
 
 
@@ -1447,7 +1548,9 @@
 		
 	}
 	
-	
+	/**
+     * @return      boolean
+     */
 	public function delEmptyDirs($p1_s_dir_src = '.')
 	{
 	
@@ -1466,11 +1569,13 @@
 			
 			return true;	
 			
-		}else{ return false; }
+		}else return false; 
 		
 	}
 	
-	
+	/**
+     * @return      mixed
+     */
 	public function translateBigText($p1_s_text, $p2_i_limit_car, $p3_s_to_what_language)
 	{
 	
@@ -1540,7 +1645,7 @@
 		{
 			return $sc_translated_text;
 			
-		}else{ return false; }
+		}else return false; 
 		
 	
 	}
@@ -1553,6 +1658,7 @@
 	 * @see			that the funk doesnot handle same values found in the array
 	 * @see			that if you pass a "string int" like this '10000' it will be ranked before 10
 	 * @see			that the funk doesn not handle float values
+     * @return      mixed
 	 */
  	
  	 public function simpleRSort($p1_mda_disorder)
@@ -1647,13 +1753,17 @@
 					
 					}else{ return $a_sorted; }
 				
-		 		}else{ return '<font color="red">array is empty !</font>';}
+		 		}else return '<font color="red">array is empty !</font>';
 		 		
-		 	}else{ return '<font color="red">ERREUR :: param should be an array !</font>';}
+		 	}else return '<font color="red">ERREUR :: param should be an array !</font>';
 		 	
-	 	}else{ return '<font color="red">you tried to pass more than one var</font>'; } 
+	 	}else return '<font color="red">you tried to pass more than one var</font>'; 
 	
 	 }
+     
+     /**
+     * @return      void
+     */
      
     public function chmodR($p1_s_src='.', $p2_i_chmod)
     {
@@ -1676,6 +1786,10 @@
         
         closedir($h_dir);
     }
+    
+    /**
+     * @return      boolean
+     */
     
     public function copyTree($p1_s_dir_src = '.', $p2_s_dir_dest = NULL)
     {
@@ -1712,4 +1826,3 @@
     }
 		############# END OF CLASS ######################
 }
-?>
