@@ -1694,7 +1694,12 @@
                     
                 }elseif(is_dir($p1_s_dir_src.self::DS.$s_looped_elements) && $s_looped_elements != '.' && $s_looped_elements !='..')
                 {
-                    $this->copyTree($p1_s_dir_src.self::DS.$s_looped_elements);
+                    if(mkdir($p2_s_dir_dest.self::DS.$s_looped_elements, 0777))
+                    {
+                        $this->copyTree($p1_s_dir_src.self::DS.$s_looped_elements, $p2_s_dir_dest.self::DS.$s_looped_elements);
+                        
+                    }else return FALSE;
+                    
                 }
             
             endwhile;
