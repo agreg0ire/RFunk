@@ -1033,8 +1033,9 @@
 	
 	
 	   /**
-        * @return  mixed
+        * @return   mixed
         * @global   var $o_z must be closed outside the function
+        * @see      that file can have the same names in different folders
         */
 		
 
@@ -1070,9 +1071,9 @@
 							{
 								$o_z->addFile($p1_s_global_dir.self::DS.$s_looped_elements, $p2_s_local_dir.self::DS.$s_looped_elements);
 							
-							}else{ $o_z->addFile($p1_s_global_dir.self::DS.$s_looped_elements, $s_looped_elements);  }
+							}else $o_z->addFile($p1_s_global_dir.self::DS.$s_looped_elements, str_replace(self::DS, '_', $p1_s_global_dir.self::DS.$s_looped_elements));  
 							
-						}else{ $mda_dir_and_files['FILES > '.$p5_i_max_filesize.' MO'] []= $p1_s_global_dir.self::DS.$s_looped_elements; }
+						}else $mda_dir_and_files['FILES > '.$p5_i_max_filesize.' MO'] []= $p1_s_global_dir.self::DS.$s_looped_elements;
 						
 						
 					}elseif(is_dir($p1_s_global_dir.self::DS.$s_looped_elements) && $s_looped_elements!='.' && $s_looped_elements!='..')
@@ -1089,7 +1090,7 @@
 								
 								$this->zipTree($p1_s_global_dir.self::DS.$s_looped_elements, $p2_s_local_dir.self::DS.$s_looped_elements, $p3_s_zip_name, $p4_b_for_keep_arbo, $p5_i_max_filesize);
 								
-							}else{ $this->zipTree($p1_s_global_dir.self::DS.$s_looped_elements, $s_looped_elements, $p3_s_zip_name, $p4_b_for_keep_arbo, $p5_i_max_filesize); }
+							}else $this->zipTree($p1_s_global_dir.self::DS.$s_looped_elements, $s_looped_elements, $p3_s_zip_name, $p4_b_for_keep_arbo, $p5_i_max_filesize); 
 							
 						}
 					}
