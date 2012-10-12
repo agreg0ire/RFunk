@@ -990,45 +990,49 @@
 	}
     
     /**
-     * @return  mixed
+     * @return  multidim array
      * @see     that in order to work PERFECTLY the extraction folder must be '.'
      * @see     if you use another type of destination it will work randomly
      */
     
     public function unZipZipInZipShorterVersion($p1_s_zip_src, $p2_s_dir_dest = '.')
     {
-        static $a_imbricated_zips;
+         static $a_imbricated_zips;
         
-        $o_zip = new ZipArchive;
+            $o_zip = new ZipArchive;
         
-        if($o_zip->open($p1_s_zip_src)  === TRUE)
-        {
-            for($i = 0; $i < $o_zip->numFiles; $i++):
-            
-                $a_infos_elements = $o_zip->statIndex($i);
+            if($o_zip->open($p1_s_zip_src)  === TRUE)
+            {
+                for($i = 0; $i < $o_zip->numFiles; $i++):
                 
-                if($o_zip->extractTo($p2_s_dir_dest, $a_infos_elements ['name'] ) === TRUE)
-                {
-                    if(strtolower(strrchr($a_infos_elements ['name'], '.' )) == '.zip')
+                    $a_infos_elements = $o_zip->statIndex($i);
+                    
+                    if($o_zip->extractTo($p2_s_dir_dest, $a_infos_elements ['name'] ) === TRUE)
                     {
                         
-                        $a_imbricated_zips [] = $a_infos_elements['name'];
-                        $this->unZipZipInZipShorterVersion($a_infos_elements['name'], $p2_s_dir_dest); 
-                    }
+                        
+                        if(strtolower(strrchr($a_infos_elements ['name'], '.' )) == '.zip')
+                        {
+                           
+                            $a_imbricated_zips ['ZIP'] []  = $a_infos_elements['name'];
                     
-                }else return FALSE;
+                            $this->unZipZipInZipShorterVersion($a_infos_elements['name'], $p2_s_dir_dest);
+                            
+                        }else $a_any_elements ['! ZIP'] []  = $a_infos_elements ['name']; 
+                        
+                    }else return FALSE;
+                
+                endfor;
+                
+                $o_zip->close();
+                
+            }else return FALSE;
             
-            endfor;
-            
-            $o_zip->close();
-            
-        }else return FALSE;
-        
-        if(is_array($a_imbricated_zips))
-        {
-            return $a_imbricated_zips;
-            
-        }else return FALSE;
+            if(is_array($a_imbricated_zips))
+            {
+                return $a_imbricated_zips;
+                
+            }else return $a_any_elements;
     }
 	
 	
