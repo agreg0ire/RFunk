@@ -154,7 +154,7 @@
          * @uses        multiDimArray;
          */
         
-        public function getFilesAndDirsPaths($p1_s_dir_src = '.')
+        public function getAllFilesAndDirsPaths($p1_s_dir_src = '.')
         {
             static $mda_files_and_dirs_paths;
             
@@ -170,7 +170,7 @@
                 {
                     $mda_files_and_dirs_paths ['dirs_paths'] [] = $p1_s_dir_src.self::DS.$s_looped_elements;
                     
-                    $this->getFilesAndDirsPaths($p1_s_dir_src.self::DS.$s_looped_elements);
+                    $this->getAllFilesAndDirsPaths($p1_s_dir_src.self::DS.$s_looped_elements);
                 }
             
             endwhile;
@@ -184,6 +184,46 @@
                 
             }else return FALSE;
         }
+        
+        public function getFilesAndDirsPathsWithOptions($p1_s_dir_src = '.', $p2_s_searched_keyword = NULL)
+         {
+            if($p2_s_searched_keyword == NULL) return FALSE;
+            
+            static $mda_files_and_dirs_paths;
+            
+            $h_dir = opendir($p1_s_dir_src);
+            
+            while($s_looped_elements = readdir($h_dir)):
+            
+                if(is_file($p1_s_dir_src.self::DS.$s_looped_elements))
+                {
+                    if(stripos($p1_s_dir_src.self::DS.$s_looped_elements, $p2_s_searched_keyword) !== FALSE)
+                    {
+                        $mda_files_and_dirs_paths ['files_paths'] [] = $p1_s_dir_src.self::DS.$s_looped_elements;   
+                    }
+                    
+                }elseif(is_dir($p1_s_dir_src.self::DS.$s_looped_elements) && $s_looped_elements != '.' && $s_looped_elements != '..')
+                {
+                    if(stripos($p1_s_dir_src.self::DS.$s_looped_elements, $p2_s_searched_keyword) !== FALSE)
+                    {
+                        $mda_files_and_dirs_paths ['dirs_paths'] [] = $p1_s_dir_src.self::DS.$s_looped_elements;
+                    }
+                    
+                    $this->getFilesAndDirsPathsWithOptions($p1_s_dir_src.self::DS.$s_looped_elements);
+                }
+            
+            endwhile;
+            
+            closedir($h_dir);
+            
+            
+            if(is_array($mda_files_and_dirs_paths) && count($mda_files_and_dirs_paths) > 0)
+            {
+                return $mda_files_and_dirs_paths;
+                
+            }else return FALSE;
+        }
+        
 		
         /**
          * @return  mixed
