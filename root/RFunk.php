@@ -209,7 +209,7 @@
                         $mda_files_and_dirs_paths ['dirs_paths'] [] = $p1_s_dir_src.self::DS.$s_looped_elements;
                     }
                     
-                    $this->getFilesAndDirsPathsWithOptions($p1_s_dir_src.self::DS.$s_looped_elements);
+                    $this->getFilesAndDirsPathsWithOptions($p1_s_dir_src.self::DS.$s_looped_elements, $p2_s_searched_keyword);
                 }
             
             endwhile;
