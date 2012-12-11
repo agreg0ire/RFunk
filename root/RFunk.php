@@ -1,7 +1,11 @@
 <?php
+
+/**
+ * @filesource  https://github.com/eclectric-music/RFunk
+ */
 	
-	class RFunk
-	{
+class RFunk
+{
 		
 		const DS=DIRECTORY_SEPARATOR;
 		
@@ -1906,54 +1910,72 @@
 /**
  * @param   p1 mixed needles to be searched
  * @param   p2 string text to search into
- * @return  mixed, multidim array on succes and bool false on failure
+ * @return  mixed, array on succes and bool false on failure
  */
 
-    public function isTotalOfStringOccurencesIsAnEvenOrAnOddNumber($p1_m_needle = NULL, $p2_s_haystack = NULL)
+public function isTotalOfStringOccurencesIsAnEvenOrAnOddNumber($p1_m_needle = NULL, $p2_s_haystack = NULL)
+{
+    static $a_output_result_foreach_searched_string, $i_num_braces, $i_num_brackets, $i_num_parenthesis;
+
+    if(func_num_args() ==  2)
     {
-        static $a_output_result_foreach_searched_string = array();
         
-        if(func_num_args() ==  2)
+        if($p1_m_needle != NULL && $p2_s_haystack != NULL)
         {
             
-            if($p1_m_needle != NULL && $p2_s_haystack != NULL)
+            if(is_string($p1_m_needle))
             {
-                
-                if(is_string($p1_m_needle))
-                {
-                     str_replace($p1_m_needle, '', $p2_s_haystack, $i_count_occurences);
-                       
-                       if($i_count_occurences > 0)
-                        {
-                          
-                            $a_output_result_foreach_searched_string [$p1_m_needle] = (is_float($i_count_occurences / 2)) ? 'ODD' : 'EVEN';
-                            
-                            return $a_output_result_foreach_searched_string;
-                            
-                       }else $a_output_result_foreach_searched_string [$p1_m_needle] = 'ODD';
-                       
-                    
-                }elseif(is_array($p1_m_needle))
-                {
-                    foreach($p1_m_needle as $s_what_needle):
-                    
-                        $this->isTotalOfStringOccurencesIsAnEvenOrAnOddNumber($s_what_needle, $p2_s_haystack);
+                 str_replace($p1_m_needle, '', $p2_s_haystack, $i_count_occurences);
+                 
+                 
+                   
+                   if($i_count_occurences > 0)
+                    {
                         
-                    endforeach;
+                        if($p1_m_needle == '[' || $p1_m_needle == ']')
+                        {
+                            $i_num_brackets += $i_count_occurences;
+                            
+                            $a_output_result_foreach_searched_string['[]'] = (is_float($i_num_brackets / 2)) ? 'ODD' : 'EVEN'; 
+                            
+                        }elseif($p1_m_needle == '(' || $p1_m_needle == ')')
+                        {
+                            $i_num_parenthesis += $i_count_occurences;
+                            
+                            $a_output_result_foreach_searched_string['()'] = (is_float($i_num_parenthesis / 2)) ? 'ODD' : 'EVEN';
+                            
+                        }elseif($p1_m_needle == '{' || $p1_m_needle == '}')
+                        {
+                            $i_num_braces += $i_count_occurences;
+                            
+                            $a_output_result_foreach_searched_string['{}'] = (is_float($i_num_braces / 2)) ? 'ODD' : 'EVEN';
+                            
+                        }else   $a_output_result_foreach_searched_string [$p1_m_needle] = (is_float($i_count_occurences / 2)) ? 'ODD' : 'EVEN';
+                        
+                   }else $a_output_result_foreach_searched_string [$p1_m_needle] = 'NULL';
+                   
+                
+            }elseif(is_array($p1_m_needle))
+            {
+                foreach($p1_m_needle as $s_what_needle):
+                
+                   $this->isTotalOfStringOccurencesIsAnEvenOrAnOddNumber($s_what_needle, $p2_s_haystack);
                     
-                }else return FALSE;
+                endforeach;
                 
             }else return FALSE;
             
         }else return FALSE;
         
+    }else return FALSE;
+    
+    
+    if(count($a_output_result_foreach_searched_string) > 0)
+    {
         
-        if(count($a_output_result_foreach_searched_string) > 0)
-        {
-            
-            return $a_output_result_foreach_searched_string;
-            
-        }else return FALSE;
-    }
+        return $a_output_result_foreach_searched_string;
+        
+    }else return FALSE;
+}
 		############# END OF CLASS ######################
 }
