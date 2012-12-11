@@ -1913,7 +1913,7 @@ class RFunk
  * @return  mixed, array on succes and bool false on failure
  */
 
-public function isTotalOfStringOccurencesIsAnEvenOrAnOddNumber($p1_m_needle = NULL, $p2_s_haystack = NULL)
+public function isTotalOfAStringOccurencesInATextIsAnEvenOrAnOddNumber($p1_m_needle = NULL, $p2_s_haystack = NULL)
 {
     static $a_output_result_foreach_searched_string, $i_num_braces, $i_num_brackets, $i_num_parenthesis;
 
@@ -1959,7 +1959,7 @@ public function isTotalOfStringOccurencesIsAnEvenOrAnOddNumber($p1_m_needle = NU
             {
                 foreach($p1_m_needle as $s_what_needle):
                 
-                   $this->isTotalOfStringOccurencesIsAnEvenOrAnOddNumber($s_what_needle, $p2_s_haystack);
+                   $this->isTotalOfAStringOccurencesInATextIsAnEvenOrAnOddNumber($s_what_needle, $p2_s_haystack);
                     
                 endforeach;
                 
