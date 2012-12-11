@@ -9,16 +9,11 @@
 	
 		public function __construct($p1_i_max_time=0) 
 		{
+		  for($i=0; $i<20; $i++):  $this->i_diviseur_mo *=2; endfor;
+          
+		  if(is_int($p1_i_max_time))  @set_time_limit($p1_i_max_time);
 			
-			if(is_int($p1_i_max_time))
-			{
-				
-				@set_time_limit($p1_i_max_time);
 			
-				for($i=0; $i<20; $i++):  $this->i_diviseur_mo *=2; endfor;
-				
-			}else{ exit('<font color="red">ERREUR :: Le paramètre du constructeur doit être un entier non flottant</font>'); }
-		
 		}
 		/**
          * @return  string
@@ -61,7 +56,7 @@
 		  	{
 		  		return substr($s_all_file, 3);
 		              
-		    }else{ return $s_all_file; }
+		    }else return $s_all_file; 
 		}
 		
 		/**
@@ -90,7 +85,7 @@
 							$ic_octet_from_files +=filesize($p1_s_dir_src.self::DS.$s_mixed_output); 
 						}
 						
-					}else{ $ic_octet_from_files +=filesize($p1_s_dir_src.self::DS.$s_mixed_output); } 
+					}else $ic_octet_from_files +=filesize($p1_s_dir_src.self::DS.$s_mixed_output);
 					
 					
 				}elseif(is_dir($p1_s_dir_src.self::DS.$s_mixed_output) && $s_mixed_output!='.' && $s_mixed_output!='..')
@@ -107,7 +102,7 @@
 			
 				return round($ic_octet_from_files / $this->i_diviseur_mo);
 				
-			}else{ return $ic_octet_from_files / $this->i_diviseur_mo; }
+			}else return $ic_octet_from_files / $this->i_diviseur_mo;
 			
 		}	
 		/**
@@ -509,7 +504,7 @@
 								if(@rename($p1_s_dir_src.self::DS.$s_looped_elements, $p2_s_dir_path_dest.self::DS.$s_value.self::DS.$s_looped_elements))
 								{
 								
-								}else{ $a_files_in_error []=$p1_s_dir_src.self::DS.$s_looped_elements; }
+								}else $a_files_in_error []=$p1_s_dir_src.self::DS.$s_looped_elements; 
 							}
 						}
 							
@@ -554,14 +549,14 @@
 								if(@rename($p1_s_dir_src.self::DS.$s_looped_elements, $p2_s_dir_dest.self::DS.$s_looped_elements))
 								{
 								
-								}else{ $a_files_in_error []=$p1_s_dir_src.self::DS.$s_looped_elements; }
+								}else $a_files_in_error []=$p1_s_dir_src.self::DS.$s_looped_elements; 
 									
 							}else{
 							
 									if(@copy($p1_s_dir_src.self::DS.$s_looped_elements, $p2_s_dir_dest.self::DS.$s_looped_elements))
 									{
 								
-									}else{ $a_files_in_error []=$p1_s_dir_src.self::DS.$s_looped_elements; }
+									}else $a_files_in_error []=$p1_s_dir_src.self::DS.$s_looped_elements; 
 									
 								}
 								
@@ -659,7 +654,7 @@
 																		
 																$a_retour_result[$p1_s_root_dir.self::DS.$s_looped_elements] [($i_k_rows_file + 1)]= $s_output;
 																		 
-															}else{  $a_retour_result[$p1_s_root_dir.self::DS.$s_looped_elements] []= $s_output; }
+															}else  $a_retour_result[$p1_s_root_dir.self::DS.$s_looped_elements] []= $s_output;
 																
 														endforeach;
 												}
@@ -841,7 +836,7 @@
 			 		$sc_display_dump .=  '<li>&nbsp;&nbsp;["'.$m_key.'"] => '.$this->dump($m_value).'</li>'; 
 					 
 					 
-			 	}else{	$this->dump($m_key); }
+			 	}else	$this->dump($m_key); 
 	 		
 	 		endforeach;
 	 		
@@ -955,10 +950,10 @@
 													}
 											endfor;
 										
-										//la fonction extractTo sans le deuxieme parametre na pas besoin detre dans une boucle
-										}else{ $o_z->extractTo($p2_s_dir_dest); } 
+									
+										}else $o_z->extractTo($p2_s_dir_dest);
 										
-									}else{ $mda_exceptions['ZIPS > '.$p3_i_max_size_zip.' MO'] []= $p1_s_dir_src.self::DS.$s_looped_elements; }
+									}else $mda_exceptions['ZIPS > '.$p3_i_max_size_zip.' MO'] []= $p1_s_dir_src.self::DS.$s_looped_elements;
 								}
 								
 							}elseif(is_dir($p1_s_dir_src.self::DS.$s_looped_elements) && $s_looped_elements!='.' && $s_looped_elements!='..')
@@ -977,6 +972,7 @@
 					if(isset($mda_exceptions['ZIPS < '.$p3_i_max_size_zip.' MO']))
                     {
                         return $mda_exceptions;
+                        
                     }else return false; 
 		
 		}
@@ -1036,7 +1032,7 @@
 						if(@unlink($p1_s_first_zip))
 						{
 							
-						}else{ return false; }
+						}else return false; 
 					}
 				}
 			
@@ -1279,7 +1275,7 @@
 					$sc_arbo .= '<li><img src="images/+.jpg" border="none" onclick="switchDisplay(document.getElementById(\''.$p1_s_dir_src.'\'), this);" />&nbsp
 								<b>'.$s_last_dir.'</b></li><ul id="'.$p1_s_dir_src.'" style="display:none;">';
 					
-				}else{ $sc_arbo .= '<li>'.$s_last_dir.'></li><ul>'; }
+				}else $sc_arbo .= '<li>'.$s_last_dir.'></li><ul>'; 
 			}
 		
 		$h_dir=opendir($p1_s_dir_src);
@@ -1555,7 +1551,7 @@
 					{
 						$sc_tree_files_and_dir .= '"'.$s_looped_elements.'", ';
 						
-					}else{ $sc_tree_files_and_dir .= '"'.$s_looped_elements.'"'; }
+					}else $sc_tree_files_and_dir .= '"'.$s_looped_elements.'"'; 
 				
 				}elseif($i_num_files == $i_num_files_2 && $i_num_dirs == 0)			//si il ya plusieurs fichiers et qu'on est au dernier' et qu il n y a pas de dossier
 				{
@@ -1564,7 +1560,7 @@
 						
 					
 					
-				}else{ 	$sc_tree_files_and_dir .= '"'.$s_looped_elements.'", '; }	//si il ya plusieurs fichiers et qu'on est pas encore au dernier'
+				}else	$sc_tree_files_and_dir .= '"'.$s_looped_elements.'", '; 	//si il ya plusieurs fichiers et qu'on est pas encore au dernier'
 				
 				
 			}elseif(is_dir($p1_s_dir_src.'/'.$s_looped_elements) && $s_looped_elements != '.' && $s_looped_elements != '..')
@@ -1586,7 +1582,7 @@
 						
 							$sc_tree_files_and_dir .= '), ';
 						
-					}else{ 	$sc_tree_files_and_dir .= ')'; }
+					}else 	$sc_tree_files_and_dir .= ')'; 
 					
 				}elseif($i_num_dirs == 1 && $i_num_dirs_2 == 1)						//si il n y a qu'un dossier sans autres fichiers'
 				{
@@ -1601,7 +1597,7 @@
 						
 							$sc_tree_files_and_dir .= '), ';
 						
-					}else{ 	$sc_tree_files_and_dir .= ')'; }	
+					}else 	$sc_tree_files_and_dir .= ')'; 	
 												
 						
 				}elseif($i_num_dirs == $i_num_dirs_2 && $i_num_files == 0)	//si il ya plusieurs dossier et qu on est au dernier MAIS qu il n ya PAS d'autre fichiers !'
@@ -1609,7 +1605,7 @@
 					
 					$sc_tree_files_and_dir .= ')';									
 						
-				}else{ $sc_tree_files_and_dir .= '), '; }						// s il ya plusieurs dossiers et qu on est pas encore au dernier !
+				}else $sc_tree_files_and_dir .= '), '; 						// s il ya plusieurs dossiers et qu on est pas encore au dernier !
 				
 			}
 		
@@ -1624,7 +1620,7 @@
 			
 			return $mda_tree_files_and_dir;
 			
-		}else{ return false; }
+		}else return false; 
 		
 		
 	}
@@ -1677,7 +1673,7 @@
 				
 				$p1_s_text = str_replace(array(PHP_EOL, '&'), array('+','and'), utf8_decode(trim($p1_s_text)));
 				
-			}else{ return false; }
+			}else return false; 
 		
 		}
 	
@@ -1699,9 +1695,9 @@
 						$this->translateBigText(substr($p1_s_text, $p2_i_limit_car), $p2_i_limit_car, $p3_s_to_what_language);
 			
 						
-					}else{ echo 'ERROR !';}
+					}else echo 'ERROR !';
 					
-				}else{ echo 'Please wait for the translation ! '; }
+				}else echo 'Please wait for the translation ! '; 
 			
 			
 		}else
@@ -1799,9 +1795,9 @@
 				 					
 				 					$i_make_ranking = 0;										//DON'T FORGET TO SET THE COUNTER TO 0 foreach first level values
 				 					
-								}else{	$this->simpleRSort($m_value);	}
+								}else	$this->simpleRSort($m_value);	
 				 					
-		 				}else{ return '<font color="red">the input array contains several time this value => '.$m_value.'</font>';}
+		 				}else return '<font color="red">the input array contains several time this value => '.$m_value.'</font>';
 		 			
 		 			
 		 			endforeach;
@@ -1832,7 +1828,7 @@
 						return $mda_all_sorted_haystacks;
 						
 					
-					}else{ return $a_sorted; }
+					}else return $a_sorted;
 				
 		 		}else return '<font color="red">array is empty !</font>';
 		 		
@@ -1902,6 +1898,60 @@
             closedir($h_dir);
             
             return TRUE;
+            
+        }else return FALSE;
+    }
+    
+
+/**
+ * @param   p1 mixed needles to be searched
+ * @param   p2 string text to search into
+ * @return  mixed, multidim array on succes and bool false on failure
+ */
+
+    public function isTotalOfStringOccurencesIsAnEvenOrAnOddNumber($p1_m_needle = NULL, $p2_s_haystack = NULL)
+    {
+        static $a_output_result_foreach_searched_string = array();
+        
+        if(func_num_args() ==  2)
+        {
+            
+            if($p1_m_needle != NULL && $p2_s_haystack != NULL)
+            {
+                
+                if(is_string($p1_m_needle))
+                {
+                     str_replace($p1_m_needle, '', $p2_s_haystack, $i_count_occurences);
+                       
+                       if($i_count_occurences > 0)
+                        {
+                          
+                            $a_output_result_foreach_searched_string [$p1_m_needle] = (is_float($i_count_occurences / 2)) ? 'ODD' : 'EVEN';
+                            
+                            return $a_output_result_foreach_searched_string;
+                            
+                       }else $a_output_result_foreach_searched_string [$p1_m_needle] = 'ODD';
+                       
+                    
+                }elseif(is_array($p1_m_needle))
+                {
+                    foreach($p1_m_needle as $s_what_needle):
+                    
+                        $this->isTotalOfStringOccurencesIsAnEvenOrAnOddNumber($s_what_needle, $p2_s_haystack);
+                        
+                    endforeach;
+                    
+                }else return FALSE;
+                
+            }else return FALSE;
+            
+        }else return FALSE;
+        
+        
+        if(count($a_output_result_foreach_searched_string) > 0)
+        {
+            
+            return $a_output_result_foreach_searched_string;
             
         }else return FALSE;
     }
