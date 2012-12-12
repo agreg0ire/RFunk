@@ -3,7 +3,7 @@
 /**
  * @link            https://github.com/eclectric-music/RFunk
  * @filesource      of RFunk class
- * @author          eclectric-music      
+ * @author          eclectricmusic      
  */
 	
 class RFunk
@@ -625,7 +625,13 @@ class RFunk
 			}
 	
     /**
-    * @return  mixed
+     * @name    findStr
+     * @param   p1 string for source dir
+     * @param   p2  string searched pattern
+     * @param   p3 array of ascii ext files
+     * @param   p4 bool for case sensitive
+     * @param   P5 bool for display line number in file
+    * @return  mixed multidim array with string key of filepath and name containing sublevel array with int key of line file where keyword is found. Or bool false if nothing was found.
     */
 		
 	public function findStr($p1_s_root_dir='.', $p2_s_searched_pattern, array $p3_a_ext_ascii, $p4_b_for_casse_sensitive=false, $p5_b_for_view_line=true, $p6_b_for_regexp=false)
@@ -672,9 +678,9 @@ class RFunk
 													
 													$a_retour_result[$p1_s_root_dir.self::DS.$s_looped_elements] [($i_k_rows_file + 1)]= $s_output;
 													 
-												}else{  $a_retour_result[$p1_s_root_dir.self::DS.$s_looped_elements] []= $s_output; }
+												}else  $a_retour_result[$p1_s_root_dir.self::DS.$s_looped_elements] []= $s_output;
 												
-											}else{ echo 'bug au replace'; }
+											}
 											
 										}
 										
@@ -726,9 +732,9 @@ class RFunk
 														
 														$a_retour_result[$p1_s_root_dir.self::DS.$s_looped_elements] [($i_k_rows_file + 1)]= $s_output;
 														 
-													}else{  $a_retour_result[$p1_s_root_dir.self::DS.$s_looped_elements] []= $s_output; }
+													}else $a_retour_result[$p1_s_root_dir.self::DS.$s_looped_elements] []= $s_output;
 													
-												}else{ echo 'bug au replace'; }
+												}
 												
 											}
 											
@@ -765,7 +771,7 @@ class RFunk
 									}
 							endforeach;
 							
-						}else{ echo '<br /><font color="red">ERREUR :: IMPOSSIBLE d\'ouvrir ce fichier => </font> <b>'.$p1_s_root_dir.self::DS.$s_looped_elements.'</b>. Vérifiez qu\'il ne soit pas vide !!!'; }
+						}
 					}
 					
 					
@@ -778,7 +784,7 @@ class RFunk
 		
 	closedir($h_dir);
 		
-		if(isset($a_retour_result))
+		if(count($a_retour_result) > 0)
         { 
             return $a_retour_result;
         
@@ -786,7 +792,10 @@ class RFunk
 	}   
 	   
     /**
-    * @return  string
+     * @name    dump
+     * @param p1 mixed var
+    * @return  string of results on a type and value of a variable
+    * @example  does not work like var_dump(); you need to echo the results : echo $o->dump(array('test', true, 0.2));
     */
 	  
 	public function dump($p1_m_var = null)
@@ -794,7 +803,8 @@ class RFunk
 		static $i_num_imbricated_array;
 	 	static $i_num_obj;
 	 	
-	 	if(func_num_args() > 1) echo '<b>WARNING :: You try to pass more than one var ! </b><br /> ';
+        
+	 	if(func_num_args() > 1) die('<b>WARNING :: You try to pass more than one var ! </b><br /> ');
 	 	
 	 	if(is_null($p1_m_var))
 	 	{
@@ -895,15 +905,19 @@ class RFunk
  	}
 	
 	/**
-    * @return  mixed
+     * @name    zipFiles
+     * @param   p1 string for source dir
+     * @param   p2 srting for extraction dest dir
+     * @param   p3 string for prefixing zip dest archives
+     * @param   p4 integer for filesize limit to archive
+    * @return  mixed array with file superior to maxfilesize or bool true on success
     */
 		public function zipFiles($p1_s_dir_src, $p2_s_dir_dest='.', $p3_s_zips_name='output_', $p4_i_max_file_size=4)
 		{
 		 	
 		 	$o_z=new ZipArchive;
 		 	
-		 	static $a_files_up_to_max_filesize;
-		 	static $i_count_recur;
+		 	static $a_files_up_to_max_filesize, $i_count_recur;
 		 	
 		 	$i_count_recur++;
 		 	
@@ -920,7 +934,7 @@ class RFunk
 									
 								$o_z->addFile($p1_s_dir_src.self::DS.$s_output_looped,$s_output_looped);
 										
-							}else{ $a_files_up_to_max_filesize []= $p1_s_dir_src.self::DS.$s_output_looped; }
+							}else $a_files_up_to_max_filesize []= $p1_s_dir_src.self::DS.$s_output_looped;
 									
 						}elseif(is_dir($p1_s_dir_src.self::DS.$s_output_looped) && $s_output_looped!='.' && $s_output_looped!='..')
 						{
@@ -930,10 +944,12 @@ class RFunk
 						}
 								
 					endwhile;
+                    
 				closedir($h_dir);
+                
 			$o_z->close();
 			
-			if(isset($a_files_up_to_max_filesize))
+			if(count($a_files_up_to_max_filesize)> 0)
             { 
                 return $a_files_up_to_max_filesize;
             
@@ -942,8 +958,13 @@ class RFunk
 		}
 		
 		/**
-        * @return  mixed
-        * @global   var $o_z must be closed outside the function
+         * @name    unZipFolders
+         * @param   p1 string for source dir
+         * @param   p2 string for extraction zip dir dest
+         * @param   p3 integer for max filesize zip
+         * @param   p4 boolean for keep tree zip structure
+        * @return  mixed multidim array on success or bool false on failure
+        * @global  var $o_z must be closed outside the function
         */
 		
 		
@@ -952,8 +973,7 @@ class RFunk
 			
 			global $o_z;
 			
-			static $mda_exceptions;
-			static $i_count_recur;
+			static $mda_exceptions, $i_count_recur;
 			$i_count_recur++;
 			
 			if($i_count_recur <= 1)
@@ -1014,9 +1034,6 @@ class RFunk
 					
 					closedir($h_dir);
 					
-					//si il ya eu au moins des zips inférieurs a 10 mo retourne tous le tableau multi dim
-					//il peut tres bien y avoir eu que des zips supérieurs a 10 mo
-					
 					if(isset($mda_exceptions['ZIPS < '.$p3_i_max_size_zip.' MO']))
                     {
                         return $mda_exceptions;
@@ -1029,16 +1046,19 @@ class RFunk
 
     /**
      * @return  mixed
+     * @param   p1 string filepath to zip source
+     * @param   p2 string extraction dir dest
+     * @param   p3 boolean to remove first zip
      * @see     that in order to work PERFECTLY the extraction folder must be '.'
      * @see     if you use another type of destination it will work randomly
-     * @deprecated  function use next one instead
+     * @uses    a swift regexp that is only working on windows system
+     * @deprecated  This function is deprecated. Use the next one instead.
      */
 
 	public function unZipZipInZip($p1_s_first_zip, $p2_s_dir_dest='.', $p3_b_for_del_first_zip=false) //ex : => unzip/other_dirs
 	{
 		
-		static $a_zips_in_base_zip;
-		static $i_count_recur;
+		static $a_zips_in_base_zip, $i_count_recur;
 		$i_count_recur++;
 		
 		$o_z=new ZipArchive;
@@ -1065,22 +1085,16 @@ class RFunk
 		$o_z->close();
 			
 		
-			if(!preg_match('#^[a-zA-Z]{1}:\\\{1}.+$#', $p1_s_first_zip))//pour ne pas supprimer le premier zip source qui est externe
+			if(!preg_match('#^[a-zA-Z]{1}:\\\{1}.+$#', $p1_s_first_zip))
 			{	
 				
-				if(@unlink($p1_s_first_zip))
-				{
-					
-				}else{ return false; }
+				if(!@unlink($p1_s_first_zip)) return FALSE;
 				
 			}else{ 
 				
 					if($p3_b_for_del_first_zip)
 					{
-						if(@unlink($p1_s_first_zip))
-						{
-							
-						}else return false; 
+						if(!@unlink($p1_s_first_zip)) return FALSE;
 					}
 				}
 			
@@ -1105,19 +1119,25 @@ class RFunk
 				
 			closedir($h_dir);
 			
-			if(isset($a_zips_in_base_zip)){  return $a_zips_in_base_zip; }else{ return false; }
+			if(count($a_zips_in_base_zip) > 0)
+            {
+                return $a_zips_in_base_zip;
+            
+            }else return false;
 				
 	}
     
     /**
-     * @return  multidim array
+     * @return  multidim array with imbricated zips
      * @see     that in order to work PERFECTLY the extraction folder must be '.'
      * @see     if you use another type of destination it will work randomly
+     * @param   p1 string to zip file source
+     * @param   p2 string to extraction dir dest
      */
     
     public function unZipZipInZipShorterVersion($p1_s_zip_src, $p2_s_dir_dest = '.')
     {
-         static $a_imbricated_zips;
+         static $a_imbricated_zips, $a_any_elements;
         
             $o_zip = new ZipArchive;
         
@@ -1157,7 +1177,12 @@ class RFunk
 	
 	
 	   /**
-        * @return   mixed
+        * @return   mixed multidim array on success or boolean false on failure
+        * @param    p1 string to dir source
+        * @param    p2 string to root dir name in future created zip archive
+        * @param    p3 string for zip name created
+        * @param    p4 boolean to keep tree file/folder structure
+        * @param    p5 integer to archive files under a limit filesize
         * @global   var $o_z must be closed outside the function
         * @see      that file can have the same names in different folders
         */
@@ -1166,7 +1191,7 @@ class RFunk
 	public function zipTree($p1_s_global_dir, $p2_s_local_dir, $p3_s_zip_name, $p4_b_for_keep_arbo=true, $p5_i_max_filesize=10)
 	{
 		
-			global $o_z; //CAR ON FERME LA RESSOURCE EN DEHORS DE LA FONCTION pour pouvoir ensuite agir sur les fichiers archivés
+			global $o_z;
 		
 			static $mda_dir_and_files, $i_count_recur;
 			
@@ -1222,7 +1247,7 @@ class RFunk
 				
 			closedir($h_dir);
 			 
-			if(isset($mda_dir_and_files))
+			if(count($mda_dir_and_files) > 0)
             { 
                 return $mda_dir_and_files;
             
@@ -1230,11 +1255,13 @@ class RFunk
 	}
 	
     /**
-     * @return      mixed
-     * @see         that's a double recursive function
+     * @return      mixed multidim array on success or bool false on failure
+     * @param       p1 string to source dir
+     * @see         it is a double recursive function
+     * @uses        unZipZipInZipShorterVersion
      */
 	
-		public function unZipTreeAndRInZip($p1_s_dir_src='.', $p2_b_for_del_first_zip=false)
+		public function unZipTreeAndRInZip($p1_s_dir_src='.')
 		{
 			
 			static $mda_zips_found;
@@ -1265,7 +1292,7 @@ class RFunk
 				}elseif(is_dir($p1_s_dir_src.RFunk::DS.$s_looped_elements) && $s_looped_elements !='.' && $s_looped_elements !='..')
 				{
 					
-					$this->unZipTreeAndRInZip($p1_s_dir_src.RFunk::DS.$s_looped_elements, $p2_b_for_del_first_zip);
+					$this->unZipTreeAndRInZip($p1_s_dir_src.RFunk::DS.$s_looped_elements);
 				}
 			
 			endwhile;
@@ -1280,6 +1307,8 @@ class RFunk
 			
 		}
 	/**
+     * @name        arbrowser
+     * @param       p1 string to source dir
      * @return      string
      */
 	public function arbrowser($p1_s_dir_src='.')
@@ -1349,6 +1378,11 @@ class RFunk
 	}
 	
     /**
+     * @name        convertFlashFontSizeToHtmlFontSize
+     * @param       p1 string text to modify
+     * @param       p2 integer flash font size
+     * @param       p3 integer html font size
+     * @param       p4 integer incrementor limit
      * @return      string
      */
 	public function convertFlashFontSizeToHtmlFontSize($p1_s_txt='', $p2_i_init_flash=8, $p3_i_init_html=1, $p4_i_end_of_flash=15)
@@ -1380,6 +1414,9 @@ class RFunk
 			}else return $p1_s_txt; 
 	}
 	/**
+     * @name        xmlRParse
+     * @param       p1 string to xml source file
+     * @param       p2 object xml (internal parameter)
      * @return      string
      */
 	public function xmlRParse($p1_s_xml_file, $p2_o_next_children)
@@ -1399,7 +1436,7 @@ class RFunk
 				
 				$s_formated_file = str_replace('&', '&amp;', $s_file);
 				
-			}else{ $s_formated_file = $s_file; }
+			}else $s_formated_file = $s_file;
 			
 			$p2_o_next_children = simplexml_load_string($s_formated_file);
 			
@@ -1431,7 +1468,7 @@ class RFunk
 				
 				}
 				
-			}else{ return $p2_o_next_children; }
+			}else return $p2_o_next_children; 
 	
 		}
 		
@@ -1477,7 +1514,7 @@ class RFunk
 						{
 							$sc_arbo_xml .= '<li><font color="blue">&lt;/'.$s_key.'&gt;</font></li>';
 								
-						}else{ $sc_arbo_xml .=  '<li><font color="blue">&lt;'.$s_key.'&gt;</font>'.$s_key.' '.$o_value.'<font color="blue">&lt;/'.$s_key.'&gt;</font></li>'; }
+						}else $sc_arbo_xml .=  '<li><font color="blue">&lt;'.$s_key.'&gt;</font>'.$s_key.' '.$o_value.'<font color="blue">&lt;/'.$s_key.'&gt;</font></li>';
 						
 				}elseif(count($o_value) == 0 && count($o_value->attributes()) > 0)		#### IF THE NODE HAS ATTRIBUTES BUT NO CHILDREN ###
 				{
@@ -1506,13 +1543,9 @@ class RFunk
 	
 	
 	/**
- * @author		KTM-TEAM-ADV
+ * @author		eclectricmusic
  * @copyright	2009
- * @filesource	of creating a faked array of the tree [files-dirs]
  * @sample		'$mda_test = array("level_0" => array("file", "file2", "level_1" => array("file3")), "file_of_level0");';
- * 
- * @todo		Si il y a plus d'un dossier ou fichier 
- * 				prendre le dernier des 2 et en fonction de l'ordre alphabétique => FERMER ou non l'array contenant les enfants'
  * 
  *@tutorial		si dans un dossier x il ya un dossier nommé "pouet" et un fichier nommer "test"
  * 				il faut mettre une virgule après "pouet" => array(xxxx), test
@@ -1527,10 +1560,10 @@ class RFunk
  * 				=> if('a' < 'z') echo 'lower';
  * 
  * 				whereas  this wont work as expected
+ *  				=> if('Z' > 'a') echo 'greater';
  * 
- * 				=> if('Z' > 'a') echo 'greater';
  * @see			that you need to hide the warning of the eval function altought the array is well formed !!!!
- * @return      mixed
+ * @return      mixed array or multidim array on success or bool false on failure
  */
 
 
@@ -1541,8 +1574,7 @@ class RFunk
 		
 		$h_dir = opendir($p1_s_dir_src);
 		
-		$i_num_files = 0;
-		$i_num_dirs = 0;
+		$i_num_files = $i_num_dirs = 0;
 		
 		while($s_looped_elements = readdir($h_dir)):
 		
@@ -1674,16 +1706,19 @@ class RFunk
 	}
 	
 	/**
-     * @return      boolean
+     * @name        delEmptyDirs
+     * @param       p1 string to source dir
+     * @uses        two other recursive functions
+     * @return      boolean true on success or false on failure
      */
 	public function delEmptyDirs($p1_s_dir_src = '.')
 	{
 	
 		if(self::DS == '/')				
 		{
-			$p1_s_dir_src = str_replace('\\', '/', $p1_s_dir_src); // si on est sur unix et quon trouve de l antislash 
+			$p1_s_dir_src = str_replace('\\', '/', $p1_s_dir_src); 
 	
-		}else{ $p1_s_dir_src = str_replace('/', '\\', $p1_s_dir_src); } // si on est sur win et quon trouve un slash 	
+		}else $p1_s_dir_src = str_replace('/', '\\', $p1_s_dir_src);
 			
 		$m_output = $this->getDirsPaths($p1_s_dir_src);
 			
@@ -1699,94 +1734,15 @@ class RFunk
 	}
 	
 	/**
-     * @return      mixed
-     */
-	public function translateBigText($p1_s_text, $p2_i_limit_car, $p3_s_to_what_language)
-	{
-	
-		
-		static $i_count_recur;
-		static $sc_translated_text;
-		$i_count_recur++;
-		
-		
-		if($i_count_recur == 1)
-		{
-			if(!empty($p1_s_text))
-			{
-			
-				if(get_magic_quotes_gpc()) $p1_s_text = stripslashes($p1_s_text);
-				
-				$p1_s_text = preg_replace('#\s#i', '+', $p1_s_text);
-				
-				$p1_s_text = str_replace(array(PHP_EOL, '&'), array('+','and'), utf8_decode(trim($p1_s_text)));
-				
-			}else return false; 
-		
-		}
-	
-		if(strlen($p1_s_text) > $p2_i_limit_car)
-		{
-			$s_first_section = substr($p1_s_text, 0, $p2_i_limit_car);
-			
-			$s_url = 'http://translate.google.fr/translate_t?hl=fr&ie=UTF-8&text='.$s_first_section.'&sl=en&tl='.$p3_s_to_what_language.'#' ;
-					
-			if($s_text = file_get_contents($s_url))
-				{
-					if(preg_match('#<div id=result_box dir="ltr">([^<>]+)</div>#i', $s_text, $a_matches))
-					{
-					
-						$s_translated_text =  stripslashes(mb_convert_encoding($a_matches[1], 'UTF-8'));
-						
-						$sc_translated_text .= $s_translated_text;
-			
-						$this->translateBigText(substr($p1_s_text, $p2_i_limit_car), $p2_i_limit_car, $p3_s_to_what_language);
-			
-						
-					}else echo 'ERROR !';
-					
-				}else echo 'Please wait for the translation ! '; 
-			
-			
-		}else
-		{
-			
-			$s_url = 'http://translate.google.fr/translate_t?hl=fr&ie=UTF-8&text='.$p1_s_text.'&sl=en&tl='.$p3_s_to_what_language.'#' ;
-					
-			if($s_text = file_get_contents($s_url))
-			{
-				if(preg_match('#<div id=result_box dir="ltr">([^<>]+)</div>#i', $s_text, $a_matches))
-				{
-					
-					$sc_translated_text  .=  stripslashes(mb_convert_encoding($a_matches[1], 'UTF-8'));
-						
-				}else{ echo 'ERROR !';}
-					
-			}else{ echo 'Please wait for the translation ! '; }
-		
-		}
-		
-		if(!empty($sc_translated_text))
-		{
-			return $sc_translated_text;
-			
-		}else return false; 
-		
-	
-	}
-	
-	/**
-	 * @filesource	of simpleRSort
-	 * @author		ktm-adv team
-	 * @copyright	2009
 	 * @tutorial	the src array must scans itself foreach elements, maybe TWICE !!!!
 	 * @see			that the funk doesnot handle same values found in the array
-	 * @see			that if you pass a "string int" like this '10000' it will be ranked before 10
-	 * @see			that the funk doesn not handle float values
-     * @return      mixed
+	 *     			that if you pass a "string int" like this '10000' it will be ranked before 10
+     * 			    that the funk doesn not handle float values
+     * @param       p1 array
+     * @return      mixed multidim array or simple array on success or bool false on failure
 	 */
  	
- 	 public function simpleRSort($p1_mda_disorder)
+ 	 public function simpleRSort(array $p1_mda_disorder)
 	 {
 	 	
 		if(func_num_args() == 1)
@@ -1845,7 +1801,7 @@ class RFunk
 				 					
 								}else	$this->simpleRSort($m_value);	
 				 					
-		 				}else return '<font color="red">the input array contains several time this value => '.$m_value.'</font>';
+		 				}//else return '<font color="red">the input array contains several time this value => '.$m_value.'</font>';
 		 			
 		 			
 		 			endforeach;
@@ -1878,15 +1834,18 @@ class RFunk
 					
 					}else return $a_sorted;
 				
-		 		}else return '<font color="red">array is empty !</font>';
+		 		}else return FALSE;
 		 		
-		 	}else return '<font color="red">ERREUR :: param should be an array !</font>';
+		 	}else return FALSE;
 		 	
-	 	}else return '<font color="red">you tried to pass more than one var</font>'; 
+	 	}else return FALSE; 
 	
 	 }
      
      /**
+      * @name       chmodR
+      * @param      p1  string to source dir
+      * @param      p2 integer to change file mode
      * @return      void
      */
      
@@ -1896,28 +1855,35 @@ class RFunk
         
         while($s_elements = readdir($h_dir)):
         
-            if(is_file($p1_s_src.'/'.$s_elements))
+            if(is_file($p1_s_src.self::DS.$s_elements))
+            {
+                chmod($p1_s_src.self::DS.$s_elements, $p2_i_chmod);
+                
+            }elseif(is_dir($p1_s_src.self::DS.$s_elements) && $s_elements!= '.' && $s_elements != '..')
             {
                 chmod($p1_s_src.'/'.$s_elements, $p2_i_chmod);
                 
-            }elseif(is_dir($p1_s_src.'/'.$s_elements) && $s_elements!= '.' && $s_elements != '..')
-            {
-                chmod($p1_s_src.'/'.$s_elements, $p2_i_chmod);
-                
-                $this->chmodR($p1_s_src.'/'.$s_elements, $p2_i_chmod);
+                $this->chmodR($p1_s_src.self::DS.$s_elements, $p2_i_chmod);
             }
         
         endwhile;
         
         closedir($h_dir);
+        
+        return;
     }
     
     /**
-     * @return      boolean
+     * @name        copyTree
+     * @param       p1 string to source dir
+     * @param       p2  string to destination dir
+     * @return      mixed   boolean true on FULL success bool false if dir dest is null or multidim array with file or dir that get error
      */
     
     public function copyTree($p1_s_dir_src = '.', $p2_s_dir_dest = NULL)
     {
+        static $a_uncopied_files_or_uncreated_dir;
+        
         if($p2_s_dir_dest != NULL)
         {
             $h_dir = opendir($p1_s_dir_src);
@@ -1928,7 +1894,7 @@ class RFunk
                 {
                     if(!copy($p1_s_dir_src.self::DS.$s_looped_elements, $p2_s_dir_dest.self::DS.$s_looped_elements))
                     {
-                        return FALSE;
+                        $a_uncopied_files_or_uncreated_dir ['ERROR::COPY'] []= $p1_s_dir_src.self::DS.$s_looped_elements;
                     }
                     
                 }elseif(is_dir($p1_s_dir_src.self::DS.$s_looped_elements) && $s_looped_elements != '.' && $s_looped_elements !='..')
@@ -1937,7 +1903,7 @@ class RFunk
                     {
                         $this->copyTree($p1_s_dir_src.self::DS.$s_looped_elements, $p2_s_dir_dest.self::DS.$s_looped_elements);
                         
-                    }else return FALSE;
+                    }else $a_uncopied_files_or_uncreated_dir ['ERROR::MKDIR'] [] = $p1_s_dir_src.self::DS.$s_looped_elements;
                     
                 }
             
@@ -1945,7 +1911,11 @@ class RFunk
                 
             closedir($h_dir);
             
-            return TRUE;
+            if(count($a_uncopied_files_or_uncreated_dir) > 0)
+            {
+                return $a_uncopied_files_or_uncreated_dir;
+                
+            }else return TRUE;
             
         }else return FALSE;
     }
