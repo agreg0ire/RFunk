@@ -1,9 +1,15 @@
 <?php
 
 /**
+ * This class is mainly composed of recursive methods. (Except the private methods).
+ * The purpose of this code is to provide a chunk of swift tools to facilitate development.
+ * Feel free to add or modify any methods you want according to your wishes and needs. 
+ *
+ * 
  * @link            https://github.com/eclectric-music/RFunk
  * @filesource      of RFunk class
- * @author          eclectricmusic      
+ * @author          eclectricmusic
+ * @name            RFunk      
  */
 	
 class RFunk
@@ -35,8 +41,8 @@ class RFunk
 		}
 		/**
          * @name    indent
-         * @param   p1 string source
-         * @param   p2 string single car to repeat
+         * @param   string source
+         * @param   string single car to repeat
          * @param   p3 int repeater
          * @return  string
          */
@@ -53,8 +59,8 @@ class RFunk
 		
         /**
          * @name    strrchr2
-         * @param   p1 string source to be splited
-         * @param   p2 string spliter
+         * @param   string source to be splited
+         * @param   string spliter
          * @return  string
          */
 		private function strrchr2($p1_s_src, $p2_s_spliter)
@@ -68,7 +74,7 @@ class RFunk
 		}
 		/**
          * @name    removeUTF8BOMHeader
-         * @param   p1 string to ASCII file source
+         * @param   string to ASCII file source
          * @return  string
          */
         
@@ -88,9 +94,9 @@ class RFunk
 		
 		/**
          * @name    calculSize
-         * @param   p1 string to source dir
+         * @param   string to source dir
          * @param   p2 boolean whether if want to round result
-         * @param   p3 string to choose a specific file ext
+         * @param   string to choose a specific file ext
          * @return  int
          */
 		public function calculSize($p1_s_dir_src='.', $p2_b_for_round=true, $p3_s_by_type='')
@@ -138,7 +144,7 @@ class RFunk
 		}	
 		/**
          * @name    getFilesPaths
-         * @param   p1 string to source dir
+         * @param   string to source dir
          * @return  mixed array of dir path on succes or bool false on failure
          */
         
@@ -174,7 +180,7 @@ class RFunk
         
         /**
          * @name        getAllFilesAndDirsPaths
-         * @param       p1 string of source dir
+         * @param       string of source dir
          * @return      mixed a multidim with file path from one side and dir path in one other or bool false on failure
          */
         
@@ -211,8 +217,8 @@ class RFunk
         
         /**
          * @name    getFilesAndDirsPathsWithOptions
-         * @param   p1 string of source dir
-         * @param   p2 string of keyword that match with file or dirname
+         * @param   string of source dir
+         * @param   string of keyword that match with file or dirname
          * @return  mixed a multidim with file path from one side and dir path in one other or bool false on failure
          */
         
@@ -258,9 +264,9 @@ class RFunk
 		
         /**
          * @name    getFilesPathsSvnVersion
-         * @param   p1 string of source dir
-         * @param   p2 array specific ext file
-         * @param   p3 string   source dir retain same value in recursion
+         * @param   string of source dir
+         * @param   array specific ext file
+         * @param   string source dir retain same value in recursion
          * @return  mixed a multidim with file path or bool false on failure
          */
 		public  function getFilesPathsSvnVersion($p1_s_dir_src='.', array $p2_a_specified_extensions, $p3_s_dir_src_not_changing) 
@@ -317,7 +323,7 @@ class RFunk
         
         /**
          * @name    getDirsPaths
-         * @param   p1 string of source dir
+         * @param   string of source dir
          * @return  mixed array of dirpath on success or bool false on failure
          */
 		
@@ -353,7 +359,7 @@ class RFunk
 		} 
         /**
          * @name    getAllExts
-         * @param   p1  string of source dir
+         * @param   string of source dir
          * @return  mixed array of all found ext file or bool false on failure
          */
 		
@@ -391,8 +397,8 @@ class RFunk
 		
 		/**
          * @name    rmFiles
-         * @param   p1 string of source dir
-         * @param   p2 array of files not to be removed
+         * @param   string of source dir
+         * @param   array of files not to be removed
          * @return  mixed array with files locked or bool false if no files were found
          */
 	
@@ -434,7 +440,7 @@ class RFunk
 
         /**
          * @name    rmParentDir
-         * @param   p1 string of source dir
+         * @param   string of source dir
          * @return  void
          */
 	
@@ -458,10 +464,10 @@ class RFunk
 
     /**
      * @name    separateFilesByMaxSize
-     * @param   p1 string of source dir
-     * @param   p2 srtring of destination dir
-     * @param   p3 string of a prefix dest dir
-     * @param   p4 int maxfilesize foreach dest dir by ext in mo
+     * @param   string of source dir
+     * @param   string of destination dir
+     * @param   string of a prefix dest dir
+     * @param   integer maxfilesize foreach dest dir by ext in mo
      * @return  mixed array of files that could not be renamed or bool true on success
      * @since   does not use a recursion by folder but according to the filesize
      * @todo    is not to specify a root dir with sub dir
@@ -510,9 +516,9 @@ class RFunk
 
     /**
      * @name    separateFilesByExts
-     * @param   p1 string of source dir
-     * @param   p2 string of destination dir
-     * @param   p3 array of specified exts
+     * @param   string of source dir
+     * @param   string of destination dir
+     * @param   array of specified exts
     * @return  mixed array of files that could not be renamed or bool true on success
     */
 
@@ -570,9 +576,9 @@ class RFunk
     
     /**
      * @name    joinFilesInOneFolder
-     * @param   p1 string of source dir
-     * @param   p2 string of destination dir
-     * @param   p3 bool to determine whether you want to rename file or copy them
+     * @param   string of source dir
+     * @param   string of destination dir
+     * @param   boolean to determine whether you want to rename file or copy them
      * @return  mixed array of files that could not be renamed or copied or bool true on success
      */
 
@@ -626,11 +632,12 @@ class RFunk
 	
     /**
      * @name    findStr
-     * @param   p1 string for source dir
-     * @param   p2  string searched pattern
-     * @param   p3 array of ascii ext files
-     * @param   p4 bool for case sensitive
-     * @param   P5 bool for display line number in file
+     * @param   string to source dir
+     * @param   string searched pattern
+     * @param   array of ascii ext files
+     * @param   boolean to case sensitive
+     * @param   boolean to display line number in file
+     * @param   boolean whether to search by simple string or regexp
     * @return  mixed multidim array with string key of filepath and name containing sublevel array with int key of line file where keyword is found. Or bool false if nothing was found.
     */
 		
@@ -793,7 +800,7 @@ class RFunk
 	   
     /**
      * @name    dump
-     * @param p1 mixed var
+     * @param  mixed any type of var
     * @return  string of results on a type and value of a variable
     * @example  does not work like var_dump(); you need to echo the results : echo $o->dump(array('test', true, 0.2));
     */
@@ -906,10 +913,10 @@ class RFunk
 	
 	/**
      * @name    zipFiles
-     * @param   p1 string for source dir
-     * @param   p2 srting for extraction dest dir
-     * @param   p3 string for prefixing zip dest archives
-     * @param   p4 integer for filesize limit to archive
+     * @param   string for source dir
+     * @param   string for extraction dest dir
+     * @param   string for prefixing zip dest archives
+     * @param   integer for filesize limit to archive
     * @return  mixed array with file superior to maxfilesize or bool true on success
     */
 		public function zipFiles($p1_s_dir_src, $p2_s_dir_dest='.', $p3_s_zips_name='output_', $p4_i_max_file_size=4)
@@ -959,10 +966,10 @@ class RFunk
 		
 		/**
          * @name    unZipFolders
-         * @param   p1 string for source dir
-         * @param   p2 string for extraction zip dir dest
-         * @param   p3 integer for max filesize zip
-         * @param   p4 boolean for keep tree zip structure
+         * @param   string for source dir
+         * @param   string for extraction zip dir dest
+         * @param   integer for max filesize zip
+         * @param   boolean for keep tree zip structure
         * @return  mixed multidim array on success or bool false on failure
         * @global  var $o_z must be closed outside the function
         */
@@ -1046,9 +1053,9 @@ class RFunk
 
     /**
      * @return  mixed
-     * @param   p1 string filepath to zip source
-     * @param   p2 string extraction dir dest
-     * @param   p3 boolean to remove first zip
+     * @param   string filepath to zip source
+     * @param   string extraction dir dest
+     * @param   boolean to remove first zip
      * @see     that in order to work PERFECTLY the extraction folder must be '.'
      * @see     if you use another type of destination it will work randomly
      * @uses    a swift regexp that is only working on windows system
@@ -1131,8 +1138,8 @@ class RFunk
      * @return  multidim array with imbricated zips
      * @see     that in order to work PERFECTLY the extraction folder must be '.'
      * @see     if you use another type of destination it will work randomly
-     * @param   p1 string to zip file source
-     * @param   p2 string to extraction dir dest
+     * @param   string to zip file source
+     * @param   string to extraction dir dest
      */
     
     public function unZipZipInZipShorterVersion($p1_s_zip_src, $p2_s_dir_dest = '.')
@@ -1178,11 +1185,11 @@ class RFunk
 	
 	   /**
         * @return   mixed multidim array on success or boolean false on failure
-        * @param    p1 string to dir source
-        * @param    p2 string to root dir name in future created zip archive
-        * @param    p3 string for zip name created
-        * @param    p4 boolean to keep tree file/folder structure
-        * @param    p5 integer to archive files under a limit filesize
+        * @param    string to dir source
+        * @param    string to root dir name in future created zip archive
+        * @param    string for zip name created
+        * @param    boolean to keep tree file/folder structure
+        * @param    integer to archive files under a limit filesize
         * @global   var $o_z must be closed outside the function
         * @see      that file can have the same names in different folders
         */
@@ -1256,7 +1263,7 @@ class RFunk
 	
     /**
      * @return      mixed multidim array on success or bool false on failure
-     * @param       p1 string to source dir
+     * @param       string to source dir
      * @see         it is a double recursive function
      * @uses        unZipZipInZipShorterVersion
      */
@@ -1308,7 +1315,7 @@ class RFunk
 		}
 	/**
      * @name        arbrowser
-     * @param       p1 string to source dir
+     * @param       string to source dir
      * @return      string
      */
 	public function arbrowser($p1_s_dir_src='.')
@@ -1379,10 +1386,10 @@ class RFunk
 	
     /**
      * @name        convertFlashFontSizeToHtmlFontSize
-     * @param       p1 string text to modify
-     * @param       p2 integer flash font size
-     * @param       p3 integer html font size
-     * @param       p4 integer incrementor limit
+     * @param       string text to modify
+     * @param       integer flash font size
+     * @param       integer html font size
+     * @param       integer incrementor limit
      * @return      string
      */
 	public function convertFlashFontSizeToHtmlFontSize($p1_s_txt='', $p2_i_init_flash=8, $p3_i_init_html=1, $p4_i_end_of_flash=15)
@@ -1415,8 +1422,8 @@ class RFunk
 	}
 	/**
      * @name        xmlRParse
-     * @param       p1 string to xml source file
-     * @param       p2 object xml (internal parameter)
+     * @param       string to xml source file
+     * @param       object xml (internal parameter)
      * @return      string
      */
 	public function xmlRParse($p1_s_xml_file, $p2_o_next_children)
@@ -1542,19 +1549,9 @@ class RFunk
 	}
 	
 	
-	/**
- * @author		eclectricmusic
- * @copyright	2009
- * @sample		'$mda_test = array("level_0" => array("file", "file2", "level_1" => array("file3")), "file_of_level0");';
- * 
- *@tutorial		si dans un dossier x il ya un dossier nommé "pouet" et un fichier nommer "test"
- * 				il faut mettre une virgule après "pouet" => array(xxxx), test
- * 
- * 				si dans un dossier x il y a un dossier nommé "pouet" et un fichier nommé "caca"
- * 				il ne faut pas mettre de virgule après "caca", "pouet" => array(xxxx)
- * @see			that this is useful if there is at least 1 file and dir in the current dir !!
- * 
- * 
+/**
+ * @name    treeIntoFakedMultiDimArray
+ * @param   string to dir source
  * @important	see that this will work as expected
  * 
  * 				=> if('a' < 'z') echo 'lower';
@@ -1707,7 +1704,7 @@ class RFunk
 	
 	/**
      * @name        delEmptyDirs
-     * @param       p1 string to source dir
+     * @param       string to source dir
      * @uses        two other recursive functions
      * @return      boolean true on success or false on failure
      */
@@ -1738,7 +1735,7 @@ class RFunk
 	 * @see			that the funk doesnot handle same values found in the array
 	 *     			that if you pass a "string int" like this '10000' it will be ranked before 10
      * 			    that the funk doesn not handle float values
-     * @param       p1 array
+     * @param       array
      * @return      mixed multidim array or simple array on success or bool false on failure
 	 */
  	
@@ -1844,8 +1841,8 @@ class RFunk
      
      /**
       * @name       chmodR
-      * @param      p1  string to source dir
-      * @param      p2 integer to change file mode
+      * @param      p1string to source dir
+      * @param      integer to change file mode
      * @return      void
      */
      
@@ -1875,8 +1872,8 @@ class RFunk
     
     /**
      * @name        copyTree
-     * @param       p1 string to source dir
-     * @param       p2  string to destination dir
+     * @param       string to source dir
+     * @param       string to destination dir
      * @return      mixed   boolean true on FULL success bool false if dir dest is null or multidim array with file or dir that get error
      */
     
@@ -1923,9 +1920,9 @@ class RFunk
 
 /**
  * @name    isTotalOfAStringOccurencesInATextIsAnEvenOrAnOddNumber
- * @param   p1 mixed needles to be searched
- * @param   p2 string text to search into
- * @return  mixed, array on succes and bool false on failure
+ * @param   mixed needles to be searched
+ * @param   string text to search into
+ * @return  mixed array on succes and bool false on failure
  */
 
 public function isTotalOfAStringOccurencesInATextIsAnEvenOrAnOddNumber($p1_m_needle = NULL, $p2_s_haystack = NULL)
