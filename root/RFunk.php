@@ -1,15 +1,29 @@
 <?php
 
 /**
- * @filesource  https://github.com/eclectric-music/RFunk
+ * @link            https://github.com/eclectric-music/RFunk
+ * @filesource      of RFunk class
+ * @author          eclectric-music      
  */
 	
 class RFunk
 {
 		
+        
+        /**
+         * @var     const DS
+         * @var     $i_diviseur_mo which is private
+         */
+         
 		const DS=DIRECTORY_SEPARATOR;
 		
 		private $i_diviseur_mo=1;
+        
+        /**
+         * @name    constructor
+         * @param   p1 int in order to set a script execution time limit
+         * @return  void
+         */
 	
 		public function __construct($p1_i_max_time=0) 
 		{
@@ -20,12 +34,16 @@ class RFunk
 			
 		}
 		/**
+         * @name    indent
+         * @param   p1 string source
+         * @param   p2 string single car to repeat
+         * @param   p3 int repeater
          * @return  string
          */
-		private function indent($p1_s_dir_orig, $p2_s_single_char, $p3_i_incr)
+		private function indent($p1_s_dir_orig, $p2_s_single_car, $p3_i_incr)
 		{
 			
-			$s_to_add=str_repeat($p2_s_single_char, $p3_i_incr);
+			$s_to_add=str_repeat($p2_s_single_car, $p3_i_incr);
 				
 			$s_formated=$s_to_add.$p1_s_dir_orig;
 				
@@ -34,6 +52,9 @@ class RFunk
 		}
 		
         /**
+         * @name    strrchr2
+         * @param   p1 string source to be splited
+         * @param   p2 string spliter
          * @return  string
          */
 		private function strrchr2($p1_s_src, $p2_s_spliter)
@@ -46,6 +67,8 @@ class RFunk
 			return strtolower($a_splited[$i_num_keys - 1]);
 		}
 		/**
+         * @name    removeUTF8BOMHeader
+         * @param   p1 string to ASCII file source
          * @return  string
          */
         
@@ -64,6 +87,10 @@ class RFunk
 		}
 		
 		/**
+         * @name    calculSize
+         * @param   p1 string to source dir
+         * @param   p2 boolean whether if want to round result
+         * @param   p3 string to choose a specific file ext
          * @return  int
          */
 		public function calculSize($p1_s_dir_src='.', $p2_b_for_round=true, $p3_s_by_type='')
@@ -110,14 +137,14 @@ class RFunk
 			
 		}	
 		/**
-         * @return  mixed
+         * @name    getFilesPaths
+         * @param   p1 string to source dir
+         * @return  mixed array of dir path on succes or bool false on failure
          */
         
-		public  function getFilesPaths($p1_s_dir_src='.') 
+		public  function getFilesPaths($p1_s_dir_src = '.') 
 		{
-			
-			
-			static $a_all_paths;
+            static $a_all_paths = array();
 			
 			$h_dir=opendir($p1_s_dir_src);
 		  
@@ -126,9 +153,6 @@ class RFunk
 					
 					if(is_file($p1_s_dir_src.self::DS.$s_mixed_output))
 					{
-						
-					 
-						
 						$a_all_paths []=$p1_s_dir_src.self::DS.$s_mixed_output;
 						
 					}elseif(is_dir($p1_s_dir_src.self::DS.$s_mixed_output) && $s_mixed_output!='.' && $s_mixed_output!='..')
@@ -141,7 +165,7 @@ class RFunk
 				}
 				closedir($h_dir);
 			
-				if(isset($a_all_paths))
+				if(count($a_all_paths) > 0)
                 {  
                     return $a_all_paths;
                     
@@ -149,8 +173,9 @@ class RFunk
 		}
         
         /**
-         * @return      mixed;
-         * @uses        multiDimArray;
+         * @name        getAllFilesAndDirsPaths
+         * @param       p1 string of source dir
+         * @return      mixed a multidim with file path from one side and dir path in one other or bool false on failure
          */
         
         public function getAllFilesAndDirsPaths($p1_s_dir_src = '.')
@@ -183,6 +208,13 @@ class RFunk
                 
             }else return FALSE;
         }
+        
+        /**
+         * @name    getFilesAndDirsPathsWithOptions
+         * @param   p1 string of source dir
+         * @param   p2 string of keyword that match with file or dirname
+         * @return  mixed a multidim with file path from one side and dir path in one other or bool false on failure
+         */
         
         public function getFilesAndDirsPathsWithOptions($p1_s_dir_src = '.', $p2_s_searched_keyword = NULL)
          {
@@ -225,15 +257,17 @@ class RFunk
         
 		
         /**
-         * @return  mixed
+         * @name    getFilesPathsSvnVersion
+         * @param   p1 string of source dir
+         * @param   p2 array specific ext file
+         * @param   p3 string   source dir retain same value in recursion
+         * @return  mixed a multidim with file path or bool false on failure
          */
 		public  function getFilesPathsSvnVersion($p1_s_dir_src='.', array $p2_a_specified_extensions, $p3_s_dir_src_not_changing) 
 		{
 			
-			static $i_count_r;
-			static $a_files_paths_and_contents;
+			static $i_count_r, $a_files_paths_and_contents;
 		
-			
 			$i_count_r++;
 			
 			if($i_count_r == 1)
@@ -259,18 +293,6 @@ class RFunk
 					 		
 					 		$a_files_paths_and_contents['file_ok'][substr($p1_s_dir_src.self::DS.$s_mixed_output, strlen($p3_s_dir_src_not_changing))]= $s_cleaned_content_from_client;
 					 		
-					 		/*
-					 		
-					 		if(!$this->hasUTF8BOMHeader($p1_s_dir_src.self::DS.$s_mixed_output))
-					 		{
-					 			$a_files_paths_and_contents['file_ok'] [substr($p1_s_dir_src.self::DS.$s_mixed_output, strlen($p3_s_dir_src_not_changing))]= $s_content_from_client;
-					 			
-					 		}else
-					 		{
-					 			$a_files_paths_and_contents['with_utf8_bom'][substr($p1_s_dir_src.self::DS.$s_mixed_output, strlen($p3_s_dir_src_not_changing))]= $s_content_from_client;
-					 		}
-				
-			 				*/
 					 	}
 					
 					}elseif(is_dir($p1_s_dir_src.self::DS.$s_mixed_output) && $s_mixed_output!='.' && $s_mixed_output!='..')
@@ -294,10 +316,12 @@ class RFunk
 		}
         
         /**
-         * @return  mixed
+         * @name    getDirsPaths
+         * @param   p1 string of source dir
+         * @return  mixed array of dirpath on success or bool false on failure
          */
 		
-		public function getDirsPaths($p1_s_dir_src='.') //le chemin doit ABSOLMENT etre ABSOLU !!!
+		public function getDirsPaths($p1_s_dir_src='.')
 		{
 	
 	       
@@ -327,8 +351,10 @@ class RFunk
                 }else return false; 
 	   
 		} 
-		  /**
-         * @return  mixed
+        /**
+         * @name    getAllExts
+         * @param   p1  string of source dir
+         * @return  mixed array of all found ext file or bool false on failure
          */
 		
 			public function getAllExts($p1_s_dir_src='.')
@@ -345,13 +371,8 @@ class RFunk
 						
 							$s_looped_exts=$this->strrchr2($s_looped_elements, '.');
 							
-							//le script génerera forcement un warning au premier passage récursif
-							//car la var $a_all_exts n'est pas encore un tableau
+							if(@!in_array($s_looped_exts, $a_all_exts))  $a_all_exts []=$s_looped_exts;
 							
-							if(@!in_array($s_looped_exts, $a_all_exts))
-							{
-								$a_all_exts []=$s_looped_exts;
-							}
 							
 					}elseif(is_dir($p1_s_dir_src.self::DS.$s_looped_elements) && $s_looped_elements!='.' && $s_looped_elements!='..' )
 					{
@@ -361,7 +382,7 @@ class RFunk
 				}
 			closedir($h_dir);
 			
-			if(isset($a_all_exts))
+			if(count($a_all_exts) > 0)
             { 
                 return $a_all_exts;
             
@@ -369,7 +390,10 @@ class RFunk
 		}
 		
 		/**
-         * @return  mixed
+         * @name    rmFiles
+         * @param   p1 string of source dir
+         * @param   p2 array of files not to be removed
+         * @return  mixed array with files locked or bool false if no files were found
          */
 	
 		public  function rmFiles($p1_s_dir_src='.', array $p2_a_files_to_avoid)
@@ -400,7 +424,7 @@ class RFunk
 				}
 			closedir($h_dir);
 			
-			if(isset($a_files_in_error))
+			if(count($a_files_in_error) > 0)
             {  
                 return $a_files_in_error;
                 
@@ -409,6 +433,8 @@ class RFunk
 		}
 
         /**
+         * @name    rmParentDir
+         * @param   p1 string of source dir
          * @return  void
          */
 	
@@ -431,7 +457,12 @@ class RFunk
 	}
 
     /**
-     * @return  mixed
+     * @name    separateFilesByMaxSize
+     * @param   p1 string of source dir
+     * @param   p2 srtring of destination dir
+     * @param   p3 string of a prefix dest dir
+     * @param   p4 int maxfilesize foreach dest dir by ext in mo
+     * @return  mixed array of files that could not be renamed or bool true on success
      * @since   does not use a recursion by folder but according to the filesize
      * @todo    is not to specify a root dir with sub dir
      */
@@ -459,22 +490,30 @@ class RFunk
 												
 							if(@rename($p1_dir_src.self::DS.$s_output_looped, $p2_s_dir_dest.self::DS.$p3_s_dir_root.self::DS.$i_compteur_recursivite.self::DS.$s_output_looped))
 							{
-							}else{ 	$a_files_in_error []=$p1_dir_src.self::DS.$s_output_looped; }
+							}else $a_files_in_error []=$p1_dir_src.self::DS.$s_output_looped;
 											
-						}else{ 	$this->separateFilesByMaxSize($p1_dir_src, $p2_s_dir_dest, $p3_s_dir_root, $p4_i_size_limit_rep_mo);  }
+						}else 	$this->separateFilesByMaxSize($p1_dir_src, $p2_s_dir_dest, $p3_s_dir_root, $p4_i_size_limit_rep_mo);
 					}
 					
 				endwhile;
 						
 			closedir($h_dir);
 						
-			if(isset($a_files_in_error)){  return $a_files_in_error;  }else{  return true;  }
+			if(count($a_files_in_error) > 0)
+            { 
+                return $a_files_in_error;
+            
+            }else return true;  
 		}
 					
 	}
 
     /**
-    * @return  mixed
+     * @name    separateFilesByExts
+     * @param   p1 string of source dir
+     * @param   p2 string of destination dir
+     * @param   p3 array of specified exts
+    * @return  mixed array of files that could not be renamed or bool true on success
     */
 
 	public function separateFilesByExts($p1_s_dir_src, $p2_s_dir_path_dest, array $p4_a_exts)
@@ -519,9 +558,10 @@ class RFunk
 					}
 					
 				endwhile;
+                
 			closedir($h_dir);
 			
-			if(isset($a_files_in_error))
+			if(count($a_files_in_error) >0)
             {  
                 return $a_files_in_error;
                 
@@ -529,8 +569,12 @@ class RFunk
 	}
     
     /**
-    * @return  mixed
-    */
+     * @name    joinFilesInOneFolder
+     * @param   p1 string of source dir
+     * @param   p2 string of destination dir
+     * @param   p3 bool to determine whether you want to rename file or copy them
+     * @return  mixed array of files that could not be renamed or copied or bool true on success
+     */
 
 
 		public function joinFilesInOneFolder($p1_s_dir_src, $p2_s_dir_dest, $p3_b_for_cut=true)
@@ -573,7 +617,7 @@ class RFunk
 				
 				closedir($h_dir);
 				
-				if(isset($a_files_in_error))
+				if(count($a_files_in_error) > 0)
                 {	
                     return $a_files_in_error; 
                 
@@ -1908,6 +1952,7 @@ class RFunk
     
 
 /**
+ * @name    isTotalOfAStringOccurencesInATextIsAnEvenOrAnOddNumber
  * @param   p1 mixed needles to be searched
  * @param   p2 string text to search into
  * @return  mixed, array on succes and bool false on failure
