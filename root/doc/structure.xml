@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project version="2.0.0a12" title="">
-  <file path="RFunk.php" hash="450149e98f1dc656d799bdc012da32b8" package="Default">
+  <file path="RFunk.php" hash="d2af62dd96e90c4a7ab0cdf06595fd42" package="Default">
     <class final="false" abstract="false" namespace="global" line="15" package="Default">
       <extends/>
       <name>RFunk</name>
@@ -41,8 +41,8 @@ Feel free to add or modify any methods you want according to your wishes and nee
           <description></description>
           <long-description></long-description>
           <tag line="28" name="name" description="constructor"/>
-          <tag line="28" name="param" description="int in order to set a script execution time limit" type="\p1" variable="$p1_i_max_time">
-            <type by_reference="false">\p1</type>
+          <tag line="28" name="param" description="in order to set a script execution time limit" type="integer" variable="$p1_i_max_time">
+            <type by_reference="false">integer</type>
           </tag>
           <tag line="28" name="return" description="" type="void">
             <type by_reference="false">void</type>
@@ -67,8 +67,8 @@ Feel free to add or modify any methods you want according to your wishes and nee
           <tag line="42" name="param" description="single car to repeat" type="string" variable="$p2_s_single_car">
             <type by_reference="false">string</type>
           </tag>
-          <tag line="42" name="param" description="int repeater" type="\p3" variable="$p3_i_incr">
-            <type by_reference="false">\p3</type>
+          <tag line="42" name="param" description="repeater" type="integer" variable="$p3_i_incr">
+            <type by_reference="false">integer</type>
           </tag>
           <tag line="42" name="return" description="" type="string">
             <type by_reference="false">string</type>
@@ -148,14 +148,14 @@ Feel free to add or modify any methods you want according to your wishes and nee
           <tag line="95" name="param" description="to source dir" type="string" variable="$p1_s_dir_src">
             <type by_reference="false">string</type>
           </tag>
-          <tag line="95" name="param" description="boolean whether if want to round result" type="\p2" variable="$p2_b_for_round">
-            <type by_reference="false">\p2</type>
+          <tag line="95" name="param" description="whether you want to round result" type="boolean" variable="$p2_b_for_round">
+            <type by_reference="false">boolean</type>
           </tag>
           <tag line="95" name="param" description="to choose a specific file ext" type="string" variable="$p3_s_by_type">
             <type by_reference="false">string</type>
           </tag>
-          <tag line="95" name="return" description="" type="int">
-            <type by_reference="false">int</type>
+          <tag line="95" name="return" description="" type="integer">
+            <type by_reference="false">integer</type>
           </tag>
         </docblock>
         <argument line="102">
@@ -699,8 +699,8 @@ Feel free to add or modify any methods you want according to your wishes and nee
         <docblock line="1137">
           <description></description>
           <long-description></long-description>
-          <tag line="1137" name="return" description="array with imbricated zips" type="\multidim">
-            <type by_reference="false">\multidim</type>
+          <tag line="1137" name="return" description="with imbricated zips or other files if no zips were found" type="array">
+            <type by_reference="false">array</type>
           </tag>
           <tag line="1137" name="see" description="in order to work PERFECTLY the extraction folder must be '.'" refers="\that"/>
           <tag line="1137" name="see" description="you use another type of destination it will work randomly" refers="\if"/>
@@ -959,8 +959,8 @@ Feel free to add or modify any methods you want according to your wishes and nee
           <description></description>
           <long-description></long-description>
           <tag line="1842" name="name" description="chmodR"/>
-          <tag line="1842" name="param" description="to source dir" type="\p1string" variable="$p1_s_src">
-            <type by_reference="false">\p1string</type>
+          <tag line="1842" name="param" description="to source dir" type="string" variable="$p1_s_src">
+            <type by_reference="false">string</type>
           </tag>
           <tag line="1842" name="param" description="to change file mode" type="integer" variable="$p2_i_chmod">
             <type by_reference="false">integer</type>
