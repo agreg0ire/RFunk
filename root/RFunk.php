@@ -2004,7 +2004,7 @@ class RFunk
 
 				if($s_ext_file == 'php')
 				{
-					if(!rename($p1_s_dir_src.self::DS.$s_looped_elements, strtolower($p1_s_dir_src.self::DS.$s_looped_elements)))
+					if(!rename($p1_s_dir_src.self::DS.$s_looped_elements, $p1_s_dir_src.self::DS.strtolower($s_looped_elements)))
 					{
 						$a_files_in_error []= $p1_s_dir_src.self::DS.$s_looped_elements;
 					}
