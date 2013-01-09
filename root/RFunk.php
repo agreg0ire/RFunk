@@ -1989,5 +1989,43 @@ class RFunk
 
     }else return FALSE;
 }
+
+	public function rewriteToLowerCasePhpFileClassForLinuxServer($p1_s_dir_src= '.')
+	{
+		static $a_files_in_error;
+
+		$h_dir = opendir($p1_s_dir_src);
+
+		while($s_looped_elements = readdir($h_dir)):
+
+			if(is_file($p1_s_dir_src.self::DS.$s_looped_elements))
+			{
+				$s_ext_file = strtolower(substr(strrchr($s_looped_elements, '.'), 1));
+
+				if($s_ext_file == 'php')
+				{
+					if(!rename($p1_s_dir_src.self::DS.$s_looped_elements, strtolower($p1_s_dir_src.self::DS.$s_looped_elements)))
+					{
+						$a_files_in_error []= $p1_s_dir_src.self::DS.$s_looped_elements;
+					}
+				}
+
+			}elseif(is_dir($p1_s_dir_src.self::DS.$s_looped_elements) && $s_looped_elements != '.' && $s_looped_elements != '..')
+			{
+
+				$this->rewriteToLowerCasePhpFileClassForLinuxServer($p1_s_dir_src.self::DS.$s_looped_elements);
+			}
+
+			endwhile;
+
+		closedir($h_dir);
+
+		if(is_array($a_files_in_error) && count($a_files_in_error) > 0)
+		{
+			return $a_files_in_error;
+
+		}else return TRUE;
+	}
+
 		############# END OF CLASS ######################
 }
