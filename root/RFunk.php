@@ -740,7 +740,7 @@ class RFunk
 
 
 
-											if($s_output=@preg_replace('#'.$p2_s_searched_pattern.'#', '<b>'.$p2_s_searched_pattern.'</b>', $s_v_rows_fil_clean_chevrons))
+											if($s_output=@preg_replace('#'.$p2_s_searched_pattern.'#', '<b>${0}</b>', $s_v_rows_fil_clean_chevrons))
 											{
 												if($p5_b_for_view_line)
 												{
@@ -762,7 +762,7 @@ class RFunk
 
 
 
-											if($s_output=@preg_replace('#'.$p2_s_searched_pattern.'#i', '<b>'.$p2_s_searched_pattern.'</b>', $s_v_rows_fil_clean_chevrons))
+											if($s_output=@preg_replace('#'.$p2_s_searched_pattern.'#i', '<b>${0}</b>', $s_v_rows_fil_clean_chevrons))
 											{
 												if($p5_b_for_view_line)
 												{
