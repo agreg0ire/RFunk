@@ -1614,7 +1614,7 @@ class RFunk
 				if($i_num_files == 1 && $i_num_files_2 == 1 && $i_num_dirs > 0)		//si il n'ya qu'1 fichiers MAIS AVEC PLUSIEURS DOSSIERS''
 				{
 
-					if($s_last_file < $s_last_dir)								//si le nom du dernier fichier et alphabétiquement inférieur au nom du dernier dossier
+					if($s_last_file < $s_last_dir)								//si le nom du dernier fichier et alphabÃ©tiquement infÃ©rieur au nom du dernier dossier
 					{
 						$sc_tree_files_and_dir .= '"'.$s_looped_elements.'", ';
 
