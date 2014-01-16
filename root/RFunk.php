@@ -14,8 +14,6 @@
 
 class RFunk
 {
-
-
 	/**
 	 * @var     const DS
 	 * @var     $i_diviseur_mo which is private
@@ -25,6 +23,8 @@ class RFunk
 
 	private $i_diviseur_mo=1;
 
+	private $a_sys_dirs, $a_ext_web_files;
+
 	/**
 	 * @name    constructor
 	 * @param   integer in order to set a script execution time limit
@@ -33,10 +33,12 @@ class RFunk
 
 	public function __construct($p1_i_max_time=0)
 	{
+		$this->a_sys_dirs = array('.', '..');
+		$this->a_ext_web_files = array('.php', '.htm', '.html', '.css', '.xml', '.js');
+
 		for($i=0; $i<20; $i++)  $this->i_diviseur_mo *=2;
 
 		if(is_int($p1_i_max_time))  @set_time_limit($p1_i_max_time);
-
 
 	}
 	/**
@@ -2029,6 +2031,92 @@ class RFunk
 			return $a_files_in_error;
 
 		}else return TRUE;
+	}
+
+	public function convertWebFilesToUTF8($p1_s_dir_src = '.')
+	{
+
+		static $a_files_in_error;
+
+		$h_dir = opendir($p1_s_dir_src);
+
+		while($s_looped_elements = readdir($h_dir)):
+
+			if(is_file($p1_s_dir_src.self::DS.$s_looped_elements))
+			{
+				$s_ext_file = strtolower(strrchr($s_looped_elements, '.'));
+
+				if(in_array($s_ext_file, $this->a_ext_web_files))
+				{
+					$m_file_to_utf8 = mb_convert_encoding(file_get_contents($p1_s_dir_src.self::DS.$s_looped_elements), 'UTF-8');
+
+					if(is_string($m_file_to_utf8))
+					{
+						if(is_bool(file_put_contents($p1_s_dir_src.self::DS.$s_looped_elements, $m_file_to_utf8)))
+						{
+							$a_files_in_error [] = $p1_s_dir_src.self::DS.$s_looped_elements;
+						}
+
+					}else $a_files_in_error []= $p1_s_dir_src.self::DS.$s_looped_elements;
+				}
+
+			}elseif(is_dir($p1_s_dir_src.self::DS.$s_looped_elements) && !in_array($s_looped_elements, $this->a_sys_dirs))
+			{
+
+				$this->convertWebFilesToUTF8($p1_s_dir_src.self::DS.$s_looped_elements);
+			}
+
+			endwhile;
+
+		closedir($h_dir);
+
+		if(is_array($a_files_in_error) && count($a_files_in_error) > 0)
+		{
+			return $a_files_in_error;
+
+		}else return TRUE;
+	}
+
+	public function listWebFilesEncodings($p1_s_dir_src = '.')
+	{
+		static $a_files_infos;
+
+		$h_dir = opendir($p1_s_dir_src);
+
+		while($s_looped_elements = readdir($h_dir)):
+
+			if(is_file($p1_s_dir_src.self::DS.$s_looped_elements))
+			{
+				$s_ext_file = strtolower(strrchr($s_looped_elements, '.'));
+
+				if(in_array($s_ext_file, $this->a_ext_web_files))
+				{
+					$m_file_encoding = mb_detect_encoding(file_get_contents($p1_s_dir_src.self::DS.$s_looped_elements), mb_list_encodings());
+
+					if(is_string($m_file_encoding))
+					{
+						
+						$a_files_infos ['OK'] [$p1_s_dir_src.self::DS.$s_looped_elements] = $m_file_encoding;
+						
+					}else $a_files_infos ['ERROR'] = $p1_s_dir_src.self::DS.$s_looped_elements;
+				}
+
+			}elseif(is_dir($p1_s_dir_src.self::DS.$s_looped_elements) && !in_array($s_looped_elements, $this->a_sys_dirs))
+			{
+
+				$this->listWebFilesEncodings($p1_s_dir_src.self::DS.$s_looped_elements);
+			}
+
+			endwhile;
+
+		closedir($h_dir);
+
+		if(is_array($a_files_infos ['ERROR']) && count($a_files_infos ['ERROR']) > 0)
+		{
+			return $a_files_infos ['ERROR'];
+
+		}else return $a_files_infos['OK'];
+
 	}
 
 	############# END OF CLASS ######################
