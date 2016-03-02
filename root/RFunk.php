@@ -2181,17 +2181,15 @@ class RFunk
 	 * @param string $dirSrc
 	 * @return Generator
 	 */
-	public function listWebFilesCharset($dirSrc = '.')
+	public function listWebFilesCharset($dirSrc = '/home/art/Documents/RFunk')
 	{
-		$a = array_diff(scandir($dirSrc), $this->sysDirs);
-
-		foreach($a as $k => $v):
+		foreach(array_diff(scandir($dirSrc), $this->sysDirs) as $k => $v):
 
 			if(is_file($dirSrc.self::DS.$v)) {
 
 				if(in_array(pathinfo($dirSrc.self::DS.$v)['extension'], $this->webFiles)){
 
-					yield $a[$k] => mb_detect_encoding(file_get_contents($dirSrc.self::DS.$v), mb_list_encodings());
+					yield $dirSrc.self::DS.$v => mb_detect_encoding(file_get_contents($dirSrc.self::DS.$v), mb_list_encodings());
 				}
 
 			}else foreach($this->listWebFilesCharset($dirSrc.self::DS.$v) as $k2 => $v2) yield $k2 => $v2;
