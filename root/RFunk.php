@@ -21,9 +21,9 @@ class RFunk
 
 	const DS=DIRECTORY_SEPARATOR;
 
-	private $i_diviseur_mo=1;
+	protected $i_diviseur_mo=1;
 
-	private $a_sys_dirs, $a_ext_web_files;
+	protected $sysDirs, $a_ext_web_files, $webFiles;
 
 	/**
 	 * @name    constructor
@@ -33,8 +33,9 @@ class RFunk
 
 	public function __construct($p1_i_max_time=0)
 	{
-		$this->a_sys_dirs = array('.', '..');
+		$this->sysDirs = ['.', '..', '.git', ];
 		$this->a_ext_web_files = array('.php', '.htm', '.html', '.css', '.xml', '.js');
+		$this->webFiles = ['php', 'htm', 'html', 'css', 'xml', 'js', 'json', ];
 
 		for($i=0; $i<20; $i++)  $this->i_diviseur_mo *=2;
 
@@ -181,6 +182,23 @@ class RFunk
 	}
 
 	/**
+	 * @param string $dirSrc
+	 * @return Generator
+	 */
+	public function getFilesPaths2($dirSrc = '.')
+	{
+		foreach(array_diff(scandir($dirSrc, SCANDIR_SORT_ASCENDING), $this->sysDirs) as $v):
+
+			if(is_dir($dirSrc.self::DS.$v))
+			{
+				foreach($this->getFilesPaths2($dirSrc.self::DS.$v) as $v2) yield $v2;
+
+			}else yield $dirSrc.self::DS.$v;
+
+		endforeach;
+	}
+
+	/**
 	 * @name        getAllFilesAndDirsPaths
 	 * @param       string of source dir
 	 * @return      mixed a multidim with file path from one side and dir path in one other or bool false on failure
@@ -215,6 +233,25 @@ class RFunk
 			return $mda_files_and_dirs_paths;
 
 		}else return FALSE;
+	}
+
+	/**
+	 * @param string $dirSrc
+	 * @return Generator
+	 */
+	public function getFilesAndDirsPaths($dirSrc = '.')
+	{
+		foreach(array_diff(scandir($dirSrc), $this->sysDirs) as $k =>  $v):
+
+			if(is_dir($dirSrc.self::DS.$v))
+			{
+				yield 'folder' => $dirSrc.self::DS.$v;
+
+				foreach($this->getFilesAndDirsPaths($dirSrc.self::DS.$v) as $k2 =>  $v2) yield $k2 => $v2;
+
+			}else yield 'file' => $dirSrc.self::DS.$v;
+
+		endforeach;
 	}
 
 	/**
@@ -397,6 +434,29 @@ class RFunk
 		}else return false;
 	}
 
+	/**
+	 * @param string $dirSrc
+	 * @return Generator
+	 */
+	public function getAllExts2($dirSrc = '.')
+	{
+		static $fileExtensions;
+
+		foreach(array_diff(scandir($dirSrc), $this->sysDirs) as $v):
+
+			if(is_file($dirSrc.self::DS.$v))
+			{
+				$ext = pathinfo($dirSrc.self::DS.$v)['extension'];
+				if(@!in_array($ext, $fileExtensions)){
+
+					$fileExtensions []= $ext;
+					yield $ext;
+				}
+
+			}else foreach($this->getAllExts2($dirSrc.self::DS.$v) as $v2) yield $v2;
+
+		endforeach;
+	}
 	/**
 	 * @name    rmFiles
 	 * @param   string of source dir
@@ -1162,8 +1222,6 @@ class RFunk
 
 				if($o_zip->extractTo($p2_s_dir_dest, $a_infos_elements ['name'] ) === TRUE)
 				{
-
-
 					if(strtolower(strrchr($a_infos_elements ['name'], '.' )) == '.zip')
 					{
 
@@ -2117,6 +2175,28 @@ class RFunk
 
 		}else return $a_files_infos['OK'];
 
+	}
+
+	/**
+	 * @param string $dirSrc
+	 * @return Generator
+	 */
+	public function listWebFilesCharset($dirSrc = '.')
+	{
+		$a = array_diff(scandir($dirSrc), $this->sysDirs);
+
+		foreach($a as $k => $v):
+
+			if(is_file($dirSrc.self::DS.$v)) {
+
+				if(in_array(pathinfo($dirSrc.self::DS.$v)['extension'], $this->webFiles)){
+
+					yield $a[$k] => mb_detect_encoding(file_get_contents($dirSrc.self::DS.$v), mb_list_encodings());
+				}
+
+			}else foreach($this->listWebFilesCharset($dirSrc.self::DS.$v) as $k2 => $v2) yield $k2 => $v2;
+
+		endforeach;
 	}
 
 	############# END OF CLASS ######################
