@@ -26,11 +26,9 @@ class RFunk
 	protected $sysDirs, $a_ext_web_files, $webFiles;
 
 	/**
-	 * @name    constructor
-	 * @param   integer in order to set a script execution time limit
-	 * @return  void
+	 * RFunk constructor.
+	 * @param int $p1_i_max_time
 	 */
-
 	public function __construct($p1_i_max_time=0)
 	{
 		$this->sysDirs = ['.', '..', '.git', ];
@@ -302,65 +300,6 @@ class RFunk
 
 
 	/**
-	 * @name    getFilesPathsSvnVersion
-	 * @param   string of source dir
-	 * @param   array specific ext file
-	 * @param   string source dir retain same value in recursion
-	 * @return  mixed a multidim with file path or bool false on failure
-	 */
-	public  function getFilesPathsSvnVersion($p1_s_dir_src='.', array $p2_a_specified_extensions, $p3_s_dir_src_not_changing)
-	{
-
-		static $i_count_r, $a_files_paths_and_contents;
-
-		$i_count_r++;
-
-		if($i_count_r == 1)
-		{
-			$p1_s_dir_src = str_replace('\\', '/', $p1_s_dir_src); //in case of
-			$p3_s_dir_src_not_changing = $p1_s_dir_src;
-
-		}
-
-
-		$h_dir=opendir($p1_s_dir_src);
-
-		while($s_mixed_output=readdir($h_dir))
-		{
-
-			if(is_file($p1_s_dir_src.self::DS.$s_mixed_output))
-			{
-
-				if(in_array(strrchr($p1_s_dir_src.self::DS.$s_mixed_output, '.'), $p2_a_specified_extensions))
-				{
-
-					$s_cleaned_content_from_client = $this->removeUTF8BOMHeader($p1_s_dir_src.self::DS.$s_mixed_output);
-
-					$a_files_paths_and_contents['file_ok'][substr($p1_s_dir_src.self::DS.$s_mixed_output, strlen($p3_s_dir_src_not_changing))]= $s_cleaned_content_from_client;
-
-				}
-
-			}elseif(is_dir($p1_s_dir_src.self::DS.$s_mixed_output) && $s_mixed_output!='.' && $s_mixed_output!='..')
-			{
-
-				$this->getFilesPathsSvnVersion($p1_s_dir_src.self::DS.$s_mixed_output, $p2_a_specified_extensions, $p3_s_dir_src_not_changing);
-
-			}
-
-		}
-		closedir($h_dir);
-
-
-		if(is_array($a_files_paths_and_contents) && count($a_files_paths_and_contents) > 0)
-		{
-			return $a_files_paths_and_contents;
-
-		}else return false;
-
-
-	}
-
-	/**
 	 * @name    getDirsPaths
 	 * @param   string of source dir
 	 * @return  mixed array of dirpath on success or bool false on failure
@@ -396,6 +335,26 @@ class RFunk
 		}else return false;
 
 	}
+
+	/**
+	 * @param string $dirSrc
+	 * @return Generator
+	 */
+	public function getDirsPaths2($dirSrc = '.')
+	{
+		foreach(array_diff(scandir($dirSrc, SCANDIR_SORT_ASCENDING), $this->sysDirs) as $v):
+
+			if(is_dir($dirSrc.self::DS.$v)){
+
+				yield $v;
+
+				foreach($this->getDirsPaths2($dirSrc.self::DS.$v)as $v2) yield $v2;
+
+			}
+
+		endforeach;
+	}
+
 	/**
 	 * @name    getAllExts
 	 * @param   string of source dir
@@ -1244,6 +1203,43 @@ class RFunk
 			return $a_imbricated_zips;
 
 		}else return $a_any_elements;
+	}
+
+	/**
+	 * @param $zipSource
+	 * @param string $extractFolder
+	 * @return Generator
+	 */
+	public function unzipR($zipSource, $extractFolder = '.')
+	{
+		if(is_dir($extractFolder)){
+
+			$zip = new ZipArchive;
+
+			if($zip->open($zipSource) === TRUE){
+
+				for($i = 0; $i < $zip->numFiles; $i++){
+
+					$fileInfos = $zip->statIndex($i);
+
+					if($zip->extractTo($extractFolder, $fileInfos['name']) === TRUE){
+
+						if(strtolower(pathinfo($fileInfos['name'])['extension']) === 'zip'){
+
+							yield $fileInfos['name'] => 'zip';
+							foreach($this->unzipR($fileInfos['name'], $extractFolder) as $k => $v) yield $k => $v;
+
+						}
+
+					}
+
+				}
+
+				$zip->close();
+			}
+
+		}else die('Extract folder does not exist! ('.$extractFolder.')');
+
 	}
 
 
