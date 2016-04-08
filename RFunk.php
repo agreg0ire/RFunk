@@ -1,28 +1,23 @@
 <?php
 
 /**
- * This class is mainly composed of recursive methods. (Except the private methods).
- * The purpose of this code is to provide a chunk of swift tools to facilitate development.
- * Feel free to add or modify any methods you want according to your wishes and needs.
- *
- *
- * @link            https://github.com/eclectric-music/RFunk
- * @filesource      of RFunk class
- * @author          eclectricmusic
- * @name            RFunk
+ * Class RFunk
  */
-
 class RFunk
 {
 	/**
-	 * @var     const DS
-	 * @var     $i_diviseur_mo which is private
+	 *
 	 */
+	const DS = DIRECTORY_SEPARATOR;
 
-	const DS=DIRECTORY_SEPARATOR;
+	/**
+	 * @var int
+	 */
+	protected $i_diviseur_mo = 1;
 
-	protected $i_diviseur_mo=1;
-
+	/**
+	 * @var array
+	 */
 	protected $sysDirs, $a_ext_web_files, $webFiles;
 
 	/**
@@ -40,12 +35,12 @@ class RFunk
 		if(is_int($p1_i_max_time))  @set_time_limit($p1_i_max_time);
 
 	}
+
 	/**
-	 * @name    indent
-	 * @param   string source
-	 * @param   string single car to repeat
-	 * @param	integer repeater
-	 * @return  string
+	 * @param $p1_s_dir_orig
+	 * @param $p2_s_single_car
+	 * @param $p3_i_incr
+	 * @return string
 	 */
 	private function indent($p1_s_dir_orig, $p2_s_single_car, $p3_i_incr)
 	{
@@ -59,10 +54,9 @@ class RFunk
 	}
 
 	/**
-	 * @name    strrchr2
-	 * @param   string source to be splited
-	 * @param   string spliter
-	 * @return  string
+	 * @param $p1_s_src
+	 * @param $p2_s_spliter
+	 * @return string
 	 */
 	private function strrchr2($p1_s_src, $p2_s_spliter)
 	{
@@ -73,12 +67,11 @@ class RFunk
 
 		return strtolower($a_splited[$i_num_keys - 1]);
 	}
-	/**
-	 * @name    removeUTF8BOMHeader
-	 * @param   string to ASCII file source
-	 * @return  string
-	 */
 
+	/**
+	 * @param $p1_s_path_to_file
+	 * @return string
+	 */
 	private function removeUTF8BOMHeader($p1_s_path_to_file)
 	{
 		$h_file = fopen($p1_s_path_to_file, "r");
@@ -94,11 +87,10 @@ class RFunk
 	}
 
 	/**
-	 * @name    calculSize
-	 * @param   string to source dir
-	 * @param   boolean whether you want to round result
-	 * @param   string to choose a specific file ext
-	 * @return  integer
+	 * @param string $p1_s_dir_src
+	 * @param bool $p2_b_for_round
+	 * @param string $p3_s_by_type
+	 * @return float
 	 */
 	public function calculSize($p1_s_dir_src='.', $p2_b_for_round=true, $p3_s_by_type='')
 	{
@@ -143,12 +135,11 @@ class RFunk
 		}else return $ic_octet_from_files / $this->i_diviseur_mo;
 
 	}
-	/**
-	 * @name    getFilesPaths
-	 * @param   string to source dir
-	 * @return  mixed array of dir path on succes or bool false on failure
-	 */
 
+	/**
+	 * @param string $p1_s_dir_src
+	 * @return array|bool
+	 */
 	public  function getFilesPaths($p1_s_dir_src = '.')
 	{
 		static $a_all_paths = array();
@@ -197,11 +188,9 @@ class RFunk
 	}
 
 	/**
-	 * @name        getAllFilesAndDirsPaths
-	 * @param       string of source dir
-	 * @return      mixed a multidim with file path from one side and dir path in one other or bool false on failure
+	 * @param string $p1_s_dir_src
+	 * @return bool
 	 */
-
 	public function getAllFilesAndDirsPaths($p1_s_dir_src = '.')
 	{
 		static $mda_files_and_dirs_paths;
@@ -253,12 +242,10 @@ class RFunk
 	}
 
 	/**
-	 * @name    getFilesAndDirsPathsWithOptions
-	 * @param   string of source dir
-	 * @param   string of keyword that match with file or dirname
-	 * @return  mixed a multidim with file path from one side and dir path in one other or bool false on failure
+	 * @param string $p1_s_dir_src
+	 * @param null $p2_s_searched_keyword
+	 * @return bool
 	 */
-
 	public function getFilesAndDirsPathsWithOptions($p1_s_dir_src = '.', $p2_s_searched_keyword = NULL)
 	{
 		if($p2_s_searched_keyword == NULL) return FALSE;
@@ -298,13 +285,10 @@ class RFunk
 		}else return FALSE;
 	}
 
-
 	/**
-	 * @name    getDirsPaths
-	 * @param   string of source dir
-	 * @return  mixed array of dirpath on success or bool false on failure
+	 * @param string $p1_s_dir_src
+	 * @return array|bool
 	 */
-
 	public function getDirsPaths($p1_s_dir_src='.')
 	{
 
@@ -356,11 +340,9 @@ class RFunk
 	}
 
 	/**
-	 * @name    getAllExts
-	 * @param   string of source dir
-	 * @return  mixed array of all found ext file or bool false on failure
+	 * @param string $p1_s_dir_src
+	 * @return array|bool
 	 */
-
 	public function getAllExts($p1_s_dir_src='.')
 	{
 
@@ -416,13 +398,12 @@ class RFunk
 
 		endforeach;
 	}
-	/**
-	 * @name    rmFiles
-	 * @param   string of source dir
-	 * @param   array of files not to be removed
-	 * @return  mixed array with files locked or bool false if no files were found
-	 */
 
+	/**
+	 * @param string $p1_s_dir_src
+	 * @param array $p2_a_files_to_avoid
+	 * @return array|bool
+	 */
 	public  function rmFiles($p1_s_dir_src='.', array $p2_a_files_to_avoid)
 	{
 
@@ -460,11 +441,8 @@ class RFunk
 	}
 
 	/**
-	 * @name    rmParentDir
-	 * @param   string of source dir
-	 * @return  void
+	 * @param $p1_s_dir_src
 	 */
-
 	public function rmParentDir($p1_s_dir_src)
 	{
 		if(count(scandir($p1_s_dir_src))<=2)
@@ -484,14 +462,11 @@ class RFunk
 	}
 
 	/**
-	 * @name    separateFilesByMaxSize
-	 * @param   string of source dir
-	 * @param   string of destination dir
-	 * @param   string of a prefix dest dir
-	 * @param   integer maxfilesize foreach dest dir by ext in mo
-	 * @return  mixed array of files that could not be renamed or bool true on success
-	 * @since   does not use a recursion by folder but according to the filesize
-	 * @todo    is not to specify a root dir with sub dir
+	 * @param $p1_dir_src
+	 * @param string $p2_s_dir_dest
+	 * @param string $p3_s_dir_root
+	 * @param int $p4_i_size_limit_rep_mo
+	 * @return array|bool
 	 */
 	public function separateFilesByMaxSize($p1_dir_src, $p2_s_dir_dest='.', $p3_s_dir_root='root_', $p4_i_size_limit_rep_mo=2)
 	{
@@ -536,13 +511,11 @@ class RFunk
 	}
 
 	/**
-	 * @name    separateFilesByExts
-	 * @param   string of source dir
-	 * @param   string of destination dir
-	 * @param   array of specified exts
-	 * @return  mixed array of files that could not be renamed or bool true on success
+	 * @param $p1_s_dir_src
+	 * @param $p2_s_dir_path_dest
+	 * @param array $p4_a_exts
+	 * @return array|bool
 	 */
-
 	public function separateFilesByExts($p1_s_dir_src, $p2_s_dir_path_dest, array $p4_a_exts)
 	{
 
@@ -596,14 +569,11 @@ class RFunk
 	}
 
 	/**
-	 * @name    joinFilesInOneFolder
-	 * @param   string of source dir
-	 * @param   string of destination dir
-	 * @param   boolean to determine whether you want to rename file or copy them
-	 * @return  mixed array of files that could not be renamed or copied or bool true on success
+	 * @param $p1_s_dir_src
+	 * @param $p2_s_dir_dest
+	 * @param bool $p3_b_for_cut
+	 * @return array|bool
 	 */
-
-
 	public function joinFilesInOneFolder($p1_s_dir_src, $p2_s_dir_dest, $p3_b_for_cut=true)
 	{
 
@@ -652,16 +622,15 @@ class RFunk
 	}
 
 	/**
-	 * @name    findStr
-	 * @param   string to source dir
-	 * @param   string searched pattern
-	 * @param   array of ascii ext files
-	 * @param   boolean to case sensitive
-	 * @param   boolean to display line number in file
-	 * @param   boolean whether to search by simple string or regexp
-	 * @return  mixed multidim array with string key of filepath and name containing sublevel array with int key of line file where keyword is found. Or bool false if nothing was found.
+	 * @param string $p1_s_root_dir
+	 * @param $p2_s_searched_pattern
+	 * @param array $p3_a_ext_ascii
+	 * @param bool $p4_b_for_casse_sensitive
+	 * @param bool $p5_b_for_view_line
+	 * @param bool $p6_b_whole_word_only
+	 * @param bool $p7_b_for_regexp
+	 * @return bool
 	 */
-
 	public function findStr($p1_s_root_dir='.', $p2_s_searched_pattern, array $p3_a_ext_ascii, $p4_b_for_casse_sensitive = FALSE, $p5_b_for_view_line = FALSE, $p6_b_whole_word_only = FALSE, $p7_b_for_regexp=false)
 	{
 
@@ -806,7 +775,6 @@ class RFunk
 					}
 				}
 
-
 			}elseif(is_dir($p1_s_root_dir.self::DS.$s_looped_elements) && $s_looped_elements !='.' && $s_looped_elements !='..')
 			{
 
@@ -824,17 +792,13 @@ class RFunk
 	}
 
 	/**
-	 * @name    dump
-	 * @param  mixed any type of var
-	 * @return  string of results on a type and value of a variable
-	 * @example  does not work like var_dump(); you need to echo the results : echo $o->dump(array('test', true, 0.2));
+	 * @param null $p1_m_var
+	 * @return string
 	 */
-
 	public function dump($p1_m_var = null)
 	{
 		static $i_num_imbricated_array;
 		static $i_num_obj;
-
 
 		if(func_num_args() > 1) die('<b>WARNING :: You try to pass more than one var ! </b><br /> ');
 
@@ -937,12 +901,11 @@ class RFunk
 	}
 
 	/**
-	 * @name    zipFiles
-	 * @param   string for source dir
-	 * @param   string for extraction dest dir
-	 * @param   string for prefixing zip dest archives
-	 * @param   integer for filesize limit to archive
-	 * @return  mixed array with file superior to maxfilesize or bool true on success
+	 * @param $p1_s_dir_src
+	 * @param string $p2_s_dir_dest
+	 * @param string $p3_s_zips_name
+	 * @param int $p4_i_max_file_size
+	 * @return array|bool
 	 */
 	public function zipFiles($p1_s_dir_src, $p2_s_dir_dest='.', $p3_s_zips_name='output_', $p4_i_max_file_size=4)
 	{
@@ -990,16 +953,12 @@ class RFunk
 	}
 
 	/**
-	 * @name    unZipFolders
-	 * @param   string for source dir
-	 * @param   string for extraction zip dir dest
-	 * @param   integer for max filesize zip
-	 * @param   boolean for keep tree zip structure
-	 * @return  mixed multidim array on success or bool false on failure
-	 * @global  var $o_z must be closed outside the function
+	 * @param $p1_s_dir_src
+	 * @param string $p2_s_dir_dest
+	 * @param int $p3_i_max_size_zip
+	 * @param bool $p4_b_for_keep_arbo
+	 * @return bool
 	 */
-
-
 	public function unZipFolders($p1_s_dir_src, $p2_s_dir_dest='.', $p3_i_max_size_zip=5, $p4_b_for_keep_arbo=true)
 	{
 
@@ -1074,137 +1033,6 @@ class RFunk
 
 	}
 
-
-
-	/**
-	 * @return  mixed
-	 * @param   string filepath to zip source
-	 * @param   string extraction dir dest
-	 * @param   boolean to remove first zip
-	 * @see     that in order to work PERFECTLY the extraction folder must be '.'
-	 * @see     if you use another type of destination it will work randomly
-	 * @uses    a swift regexp that is only working on windows system
-	 * @deprecated  This function is deprecated. Use the next one instead.
-	 */
-
-	public function unZipZipInZip($p1_s_first_zip, $p2_s_dir_dest='.', $p3_b_for_del_first_zip=false) //ex : => unzip/other_dirs
-	{
-
-		static $a_zips_in_base_zip, $i_count_recur;
-		$i_count_recur++;
-
-		$o_z=new ZipArchive;
-
-		$o_z->open($p1_s_first_zip);
-
-
-		for($i=0; $i< $o_z->numFiles; $i++):
-
-			$a_info=$o_z->statIndex($i);
-
-			$s_clean_ds=preg_replace('#[/\\\]#','_', $a_info['name']);
-
-			$o_z->renameName($a_info['name'] , $s_clean_ds);
-
-
-			if(substr($s_clean_ds, -1, 1) !='_')
-			{
-				$o_z->extractTo($p2_s_dir_dest, $s_clean_ds);
-			}
-
-			endfor;
-
-		$o_z->close();
-
-
-		if(!preg_match('#^[a-zA-Z]{1}:\\\{1}.+$#', $p1_s_first_zip))
-		{
-
-			if(!@unlink($p1_s_first_zip)) return FALSE;
-
-		}else{
-
-			if($p3_b_for_del_first_zip)
-			{
-				if(!@unlink($p1_s_first_zip)) return FALSE;
-			}
-		}
-
-		$h_dir=opendir($p2_s_dir_dest); //ex : => unzip/other_dirs
-
-		while($s_looped_elements=readdir($h_dir)):
-
-			if(is_file($p2_s_dir_dest.self::DS.$s_looped_elements))  //ex : => unzip/other_dirs/some_file.txt
-			{
-				$s_ext=$this->strrchr2($s_looped_elements, '.');
-
-				if($s_ext == 'zip')
-				{
-
-					$a_zips_in_base_zip []=$p2_s_dir_dest.self::DS.$s_looped_elements;
-
-					//ex : => unzip/other_dirs/some_file.zip  ,  unzip/other_dirs
-					$this->unZipZipInZip($p2_s_dir_dest.self::DS.$s_looped_elements, $p2_s_dir_dest, $p3_b_for_del_first_zip);
-				}
-			}
-			endwhile;
-
-		closedir($h_dir);
-
-		if(count($a_zips_in_base_zip) > 0)
-		{
-			return $a_zips_in_base_zip;
-
-		}else return false;
-
-	}
-
-	/**
-	 * @return	array with imbricated zips or other files if no zips were found
-	 * @see     that in order to work PERFECTLY the extraction folder must be '.'
-	 * @see     if you use another type of destination it will work randomly
-	 * @param   string to zip file source
-	 * @param   string to extraction dir dest
-	 */
-
-	public function unZipZipInZipShorterVersion($p1_s_zip_src, $p2_s_dir_dest = '.')
-	{
-		static $a_imbricated_zips, $a_any_elements;
-
-		$o_zip = new ZipArchive;
-
-		if($o_zip->open($p1_s_zip_src)  === TRUE)
-		{
-			for($i = 0; $i < $o_zip->numFiles; $i++):
-
-				$a_infos_elements = $o_zip->statIndex($i);
-
-				if($o_zip->extractTo($p2_s_dir_dest, $a_infos_elements ['name'] ) === TRUE)
-				{
-					if(strtolower(strrchr($a_infos_elements ['name'], '.' )) == '.zip')
-					{
-
-						$a_imbricated_zips ['ZIP'] []  = $a_infos_elements['name'];
-
-						$this->unZipZipInZipShorterVersion($a_infos_elements['name'], $p2_s_dir_dest);
-
-					}else $a_any_elements ['! ZIP'] []  = $a_infos_elements ['name'];
-
-				}else return FALSE;
-
-				endfor;
-
-			$o_zip->close();
-
-		}else return FALSE;
-
-		if(is_array($a_imbricated_zips))
-		{
-			return $a_imbricated_zips;
-
-		}else return $a_any_elements;
-	}
-
 	/**
 	 * @param $zipSource
 	 * @param string $extractFolder
@@ -1242,19 +1070,14 @@ class RFunk
 
 	}
 
-
 	/**
-	 * @return   mixed multidim array on success or boolean false on failure
-	 * @param    string to dir source
-	 * @param    string to root dir name in future created zip archive
-	 * @param    string for zip name created
-	 * @param    boolean to keep tree file/folder structure
-	 * @param    integer to archive files under a limit filesize
-	 * @global   var $o_z must be closed outside the function
-	 * @see      that file can have the same names in different folders
+	 * @param $p1_s_global_dir
+	 * @param $p2_s_local_dir
+	 * @param $p3_s_zip_name
+	 * @param bool $p4_b_for_keep_arbo
+	 * @param int $p5_i_max_filesize
+	 * @return bool
 	 */
-
-
 	public function zipTree($p1_s_global_dir, $p2_s_local_dir, $p3_s_zip_name, $p4_b_for_keep_arbo=true, $p5_i_max_filesize=10)
 	{
 
@@ -1322,12 +1145,9 @@ class RFunk
 	}
 
 	/**
-	 * @return      mixed multidim array on success or bool false on failure
-	 * @param       string to source dir
-	 * @see         it is a double recursive function
-	 * @uses        unZipZipInZipShorterVersion
+	 * @param string $p1_s_dir_src
+	 * @return bool
 	 */
-
 	public function unZipTreeAndRInZip($p1_s_dir_src='.')
 	{
 
@@ -1351,7 +1171,7 @@ class RFunk
 
 						$mda_zips_found['ZIPS < 10 MO'] []= $p1_s_dir_src.RFunk::DS.$s_looped_elements;
 
-						$this->unZipZipInZipShorterVersion($p1_s_dir_src.RFunk::DS.$s_looped_elements);
+						$this->unzipR($p1_s_dir_src.RFunk::DS.$s_looped_elements);
 
 					}else{ $mda_zips_found['ZIPS > 10 MO'] []= $p1_s_dir_src.RFunk::DS.$s_looped_elements; }
 				}
@@ -1373,10 +1193,10 @@ class RFunk
 		}else return false;
 
 	}
+
 	/**
-	 * @name        arbrowser
-	 * @param       string to source dir
-	 * @return      string
+	 * @param string $p1_s_dir_src
+	 * @return string
 	 */
 	public function arbrowser($p1_s_dir_src='.')
 	{
@@ -1445,12 +1265,11 @@ class RFunk
 	}
 
 	/**
-	 * @name        convertFlashFontSizeToHtmlFontSize
-	 * @param       string text to modify
-	 * @param       integer flash font size
-	 * @param       integer html font size
-	 * @param       integer incrementor limit
-	 * @return      string
+	 * @param string $p1_s_txt
+	 * @param int $p2_i_init_flash
+	 * @param int $p3_i_init_html
+	 * @param int $p4_i_end_of_flash
+	 * @return string
 	 */
 	public function convertFlashFontSizeToHtmlFontSize($p1_s_txt='', $p2_i_init_flash=8, $p3_i_init_html=1, $p4_i_end_of_flash=15)
 	{
@@ -1480,11 +1299,11 @@ class RFunk
 
 		}else return $p1_s_txt;
 	}
+
 	/**
-	 * @name        xmlRParse
-	 * @param       string to xml source file
-	 * @param       object xml (internal parameter)
-	 * @return      string
+	 * @param $p1_s_xml_file
+	 * @param $p2_o_next_children
+	 * @return SimpleXMLElement|string
 	 */
 	public function xmlRParse($p1_s_xml_file, $p2_o_next_children)
 	{
@@ -1608,23 +1427,10 @@ class RFunk
 
 	}
 
-
 	/**
-	 * @name    treeIntoFakedMultiDimArray
-	 * @param   string to dir source
-	 * @important	see that this will work as expected
-	 *
-	 * 				=> if('a' < 'z') echo 'lower';
-	 *
-	 * 				whereas  this wont work as expected
-	 *  				=> if('Z' > 'a') echo 'greater';
-	 *
-	 * @see			that you need to hide the warning of the eval function altought the array is well formed !!!!
-	 * @return      mixed array or multidim array on success or bool false on failure
+	 * @param string $p1_s_dir_src
+	 * @return bool
 	 */
-
-
-
 	public function treeIntoFakedMultiDimArray($p1_s_dir_src = '.')
 	{
 		static $sc_tree_files_and_dir;
@@ -1763,10 +1569,8 @@ class RFunk
 	}
 
 	/**
-	 * @name        delEmptyDirs
-	 * @param       string to source dir
-	 * @uses        two other recursive functions
-	 * @return      boolean true on success or false on failure
+	 * @param string $p1_s_dir_src
+	 * @return bool
 	 */
 	public function delEmptyDirs($p1_s_dir_src = '.')
 	{
@@ -1791,14 +1595,9 @@ class RFunk
 	}
 
 	/**
-	 * @tutorial	the src array must scans itself foreach elements, maybe TWICE !!!!
-	 * @see			that the funk doesnot handle same values found in the array
-	 *     			that if you pass a "string int" like this '10000' it will be ranked before 10
-	 * 			    that the funk doesn not handle float values
-	 * @param       array
-	 * @return      mixed multidim array or simple array on success or bool false on failure
+	 * @param array $p1_mda_disorder
+	 * @return array|bool
 	 */
-
 	public function simpleRSort(array $p1_mda_disorder)
 	{
 
@@ -1900,12 +1699,9 @@ class RFunk
 	}
 
 	/**
-	 * @name       chmodR
-	 * @param      string to source dir
-	 * @param      integer to change file mode
-	 * @return      void
+	 * @param string $p1_s_src
+	 * @param $p2_i_chmod
 	 */
-
 	public function chmodR($p1_s_src='.', $p2_i_chmod)
 	{
 		$h_dir = opendir($p1_s_src);
@@ -1931,12 +1727,10 @@ class RFunk
 	}
 
 	/**
-	 * @name        copyTree
-	 * @param       string to source dir
-	 * @param       string to destination dir
-	 * @return      mixed   boolean true on FULL success bool false if dir dest is null or multidim array with file or dir that get error
+	 * @param string $p1_s_dir_src
+	 * @param null $p2_s_dir_dest
+	 * @return bool
 	 */
-
 	public function copyTree($p1_s_dir_src = '.', $p2_s_dir_dest = NULL)
 	{
 		static $a_uncopied_files_or_uncreated_dir;
@@ -1977,14 +1771,11 @@ class RFunk
 		}else return FALSE;
 	}
 
-
 	/**
-	 * @name    isTotalOfAStringOccurencesInATextIsAnEvenOrAnOddNumber
-	 * @param   mixed needles to be searched
-	 * @param   string text to search into
-	 * @return  mixed array on succes and bool false on failure
+	 * @param null $p1_m_needle
+	 * @param null $p2_s_haystack
+	 * @return bool
 	 */
-
 	public function isTotalOfAStringOccurencesInATextIsAnEvenOrAnOddNumber($p1_m_needle = NULL, $p2_s_haystack = NULL)
 	{
 		static $a_output_result_foreach_searched_string, $i_num_braces, $i_num_brackets, $i_num_parenthesis;
@@ -2050,6 +1841,10 @@ class RFunk
 		}else return FALSE;
 	}
 
+	/**
+	 * @param string $p1_s_dir_src
+	 * @return array|bool
+	 */
 	public function rewriteToLowerCasePhpFileClassForLinuxServer($p1_s_dir_src= '.')
 	{
 		static $a_files_in_error;
@@ -2087,6 +1882,10 @@ class RFunk
 		}else return TRUE;
 	}
 
+	/**
+	 * @param string $p1_s_dir_src
+	 * @return array|bool
+	 */
 	public function convertWebFilesToUTF8($p1_s_dir_src = '.')
 	{
 
@@ -2131,6 +1930,10 @@ class RFunk
 		}else return TRUE;
 	}
 
+	/**
+	 * @param string $p1_s_dir_src
+	 * @return array
+	 */
 	public function listWebFilesEncodings($p1_s_dir_src = '.')
 	{
 		static $a_files_infos;
