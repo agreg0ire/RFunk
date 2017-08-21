@@ -1996,5 +1996,51 @@ class RFunk
 		endforeach;
 	}
 
+    /**
+     * @param array $sourceArray
+     * @param array $destArray
+     * @param array $keysOfMultiDim
+     * @param bool $emptyField
+     * @return array
+     */
+    function copyArray(array $sourceArray) {
+
+        static $counter, $destArray, $keysOfMultiDim;
+        $counter++;
+
+        foreach ($sourceArray as $k => $v):
+
+            if(!is_array($v)) {
+
+                if($counter > 1) {
+                    $dimensionsToEval = '';
+
+                    for($j = 0; ++$j < $counter;) {
+
+                        if(is_string($keysOfMultiDim['level_'.$j])) {
+
+                            $dimensionsToEval .= '["'.$keysOfMultiDim['level_'.$j].'"]';
+
+                        } else  $dimensionsToEval .= '['.$keysOfMultiDim['level_'.$j].']';
+                    }
+
+                    @eval('$destArray'.$dimensionsToEval.' [$k] = $v;');
+
+                } else $destArray [$k] = $v;
+
+            } else{
+                $keysOfMultiDim ['level_'.$counter] = $k;
+                copyArray($v); // attention $k est l'index de la dimension parente}
+            }
+
+        endforeach;
+
+        $counter--;
+        array_pop($keysOfMultiDim);
+
+        return count($destArray) > 0 ? $destArray : [];
+
+    }
+
 	############# END OF CLASS ######################
 }
